@@ -16,7 +16,7 @@ class CreateMediaTable extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
-            $table->string('synopsis');
+            $table->longText('synopsis');
             $table->boolean('isFilm');   
             $table->string('img_url')->default('http://flick.test/');
             $table->timestamps();
