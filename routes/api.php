@@ -40,6 +40,7 @@ $router->group(["prefix" => "media"], function ($router) {
     $router->get("", "MediaController@index"); 
     $router->get("films", "MediaController@indexFilms"); 
     $router->get("series", "MediaController@indexSeries"); 
+    $router->get('{media}', "MediaController@show"); 
 
 	/*********************************
 	POST/PUT

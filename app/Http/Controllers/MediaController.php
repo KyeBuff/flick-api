@@ -76,10 +76,12 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Media $media)
     {
-        //
+        // return the resource
+        return new MediaResource($media);
     }
+
 
     /**
      * Update the specified resource in storage.
