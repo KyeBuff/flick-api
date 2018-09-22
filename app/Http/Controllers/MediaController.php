@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Media;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
+use App\Genre;
+use App\App;
 
 use Illuminate\Support\Collection;
 
@@ -55,9 +57,15 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         
-        $data = $request->only(["title", "synopsis", "isFilm", "img_url"]);
+        $data = $request->only(["title", "synopsis", "isFilm", "img_url", "genres", "apps"]);
+        
+        $genres = Genre::parse($request->get("genres"));
+        $apps = App::parse($request->get("apps"));
 
         $media = Media::create($data);
+
+        $media->setGenres($genres);
+        $media->setApps($apps);
 
         return response($media, 201);
     }

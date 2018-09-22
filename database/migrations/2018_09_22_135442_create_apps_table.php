@@ -16,7 +16,6 @@ class CreateAppsTable extends Migration
         Schema::create('apps', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
-            $table->string('icon');
             $table->timestamps();
         });
     }
