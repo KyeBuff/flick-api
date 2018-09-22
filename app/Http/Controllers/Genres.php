@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Genre;
+use App\Media;
 use App\Http\Resources\GenreListResource;
 
 class Genres extends Controller
@@ -18,6 +19,10 @@ class Genres extends Controller
         return GenreListResource::collection(Genre::all());
     }
 
+    public function mediaIndex(Media $media)
+    {
+        return GenreListResource::collection($media->genres);
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\App;
+use App\Media;
 use App\Http\Resources\AppListResource;
 
 class Apps extends Controller
@@ -16,6 +17,11 @@ class Apps extends Controller
     public function index()
     {
         return AppListResource::collection(App::all());
+    }
+
+    public function mediaIndex(Media $media)
+    {
+        return AppListResource::collection($media->apps);
     }
 
     /**
