@@ -33,10 +33,19 @@ class Media extends Model
         return $this;
     }
 
+    private static function randomSeed()
+    {
+        $seed = '';
+        for ($i=0; $i < 4; $i++) { 
+            $seed .= rand(1, 15);
+        }
+        return $seed;
+    }
+
     public static function filterMedia($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::paginate(15);
+            return Media::inRandomOrder(Media::randomSeed())->paginate(15);
         }
 
         $media = null;
@@ -58,13 +67,13 @@ class Media extends Model
             }
         }
 
-        return $media->paginate(15);
+        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
     }
 
     public static function filterFilms($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::where('isFilm', 1)->paginate(15);
+            return Media::where('isFilm', 1)->inRandomOrder(Media::randomSeed())->paginate(15);
         }
 
         $media = Media::where('isFilm', 1);
@@ -78,13 +87,13 @@ class Media extends Model
             $media = Media::queryData($apps, $media, 'app');
         }
 
-        return $media->paginate(15);
+        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
     }
 
     public static function filterSeries($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::where('isFilm', 0)->paginate(15);
+            return Media::where('isFilm', 0)->inRandomOrder(Media::randomSeed())->paginate(15);
         }
         
         $media = Media::where('isFilm', 0);
@@ -98,7 +107,7 @@ class Media extends Model
             $media = Media::queryData($apps, $media, 'app');
         }
 
-        return $media->paginate(15);
+        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
     }
 
     private static function queryData($data, $query, $name) {
