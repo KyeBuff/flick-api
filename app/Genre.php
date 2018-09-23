@@ -27,3 +27,4 @@ class Genre extends Model
 	    });
 	}
 }
+

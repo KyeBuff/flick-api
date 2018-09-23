@@ -13,21 +13,35 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+  
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
 });
 
-/* RELATIONSHIPS
-Users - Apps
-Users - Genres
+/********************************************************
+USERS
+********************************************************/
+// $router->group(["prefix" => "user"], function ($router) {
+// 	/*********************************
+// 	GET
+// 	*********************************/
+//     $router->get("", "Users@getUser"); 
+//     $router->get("apps", "Users@getApps");
+//     $router->get("genres", "Users@getGenres");
 
-Series - Genres
-Series - Apps
+// 	/*********************************
+// 	POST/PUT
+// 	*********************************/
+//     $router->post("", "Users@store"); 
+//     $router->put("apps", "Users@setApps");
+//     $router->put("genres", "Users@setGenres");
 
-Films - Genres
-Films - Apps
-
-Query strings for non logged in users specifying IDs of the apps and genres
+// });
 
 /********************************************************
 MEDIA
@@ -49,26 +63,6 @@ $router->group(["prefix" => "media"], function ($router) {
 	POST/PUT
 	*********************************/
     $router->post("", "MediaController@store"); 
-});
-
-/********************************************************
-USERS
-********************************************************/
-$router->group(["prefix" => "user"], function ($router) {
-	/*********************************
-	GET
-	*********************************/
-    $router->get("", "Users@getUser"); 
-    $router->get("apps", "Users@getApps");
-    $router->get("genres", "Users@getGenres");
-
-	/*********************************
-	POST/PUT
-	*********************************/
-    $router->post("", "Users@store"); 
-    $router->put("apps", "Users@setApps");
-    $router->put("genres", "Users@setGenres");
-
 });
 
 /********************************************************
