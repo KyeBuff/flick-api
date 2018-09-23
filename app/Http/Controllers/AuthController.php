@@ -6,9 +6,17 @@ use Carbon\Carbon;
 use App\User;
 use App\App;
 use Illuminate\Support\Collection;
+use App\Http\Resources\AppListResource;
 
 class AuthController extends Controller
 {
+
+    public function indexApps(Request $request)
+    {
+        $apps = $request->user()->getApps();
+
+        return AppListResource::collection($apps);
+    }
     /**
      * Create user
      *
@@ -102,6 +110,6 @@ class AuthController extends Controller
 
         $request->user()->setApps($apps);
 
-        return $apps;
+        return AppListResource::collection($apps);
     }
 }

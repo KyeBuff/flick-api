@@ -22,6 +22,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user', 'AuthController@user');
 
         Route::post('user/apps', 'AuthController@storeAppsToUser');
+        Route::get('user/apps', 'AuthController@indexApps');
     });
 });
 

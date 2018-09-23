@@ -40,4 +40,8 @@ class User extends Authenticatable
         $this->apps()->sync($apps->pluck("id")->all());
         return $this;
     }
+    public function getApps()
+    {
+        return $this->apps;
+    }
 }
