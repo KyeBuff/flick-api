@@ -18,10 +18,22 @@ class MediaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        return MediaListResource::collection(Media::all())->shuffle();
+        // $filtered_films = collect(MediaListResource::collection(Media::all()));
+
+        $genre = Genre::findOrFail($request->genres);
+
+        $media = $genre->media()
+            ->wherePivot('genre_id', '=', $request->genres)
+            ->get(); // execute the query
+
+
+        return $media;
+
     }
+        // return ModulesCourseResource::collection($course->modules->sortBy('order'));
 
     /**
      * Store a newly created resource in storage.
@@ -33,6 +45,8 @@ class MediaController extends Controller
     {
 
         $filtered_films = collect(MediaListResource::collection(Media::all()));
+
+
 
         return $filtered_films->filter(function ($film) {
             return $film['isFilm'];
