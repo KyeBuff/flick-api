@@ -54,9 +54,7 @@ class MediaController extends Controller
     {
         if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = collect(Auth::user()->getApps())->map(function($item) {
-            return $item['id'];
-        });
+        $apps = collect(Auth::user()->getApps());
 
         $media = Media::filterMedia($request->genres, $apps);
 
@@ -72,9 +70,7 @@ class MediaController extends Controller
     {
         if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = collect(Auth::user()->getApps())->map(function($item) {
-            return $item['id'];
-        });
+        $apps = collect(Auth::user()->getApps());
 
         $media = Media::filterFilms($request->genres, $apps);
 
