@@ -36,7 +36,7 @@ class Media extends Model
     public static function filterMedia($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::get();
+            return Media::paginate(15);
         }
 
         $media = null;
@@ -58,13 +58,13 @@ class Media extends Model
             }
         }
 
-        return $media->get();
+        return $media->paginate(15);
     }
 
     public static function filterFilms($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::where('isFilm', 1)->get();
+            return Media::where('isFilm', 1)->paginate(15);
         }
 
         $media = Media::where('isFilm', 1);
@@ -78,13 +78,13 @@ class Media extends Model
             $media = Media::queryData($apps, $media, 'app');
         }
 
-        return $media->get();
+        return $media->paginate(15);
     }
 
     public static function filterSeries($genres, $apps) 
     {
         if(!$genres && !$apps) {
-            return Media::where('isFilm', 0)->get();
+            return Media::where('isFilm', 0)->paginate(15);
         }
         
         $media = Media::where('isFilm', 0);
@@ -98,7 +98,7 @@ class Media extends Model
             $media = Media::queryData($apps, $media, 'app');
         }
 
-        return $media->get();
+        return $media->paginate(15);
     }
 
     private static function queryData($data, $query, $name) {

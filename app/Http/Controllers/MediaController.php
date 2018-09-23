@@ -25,7 +25,6 @@ class MediaController extends Controller
 
     public function index(Request $request)
     {
-
         $apps = $request->apps ? explode(',', $request->apps) : null;
 
         $media = Media::filterMedia($request->genres, $apps);
@@ -43,7 +42,6 @@ class MediaController extends Controller
         $apps = $request->apps ? explode(',', $request->apps) : null;
 
         $media = Media::filterFilms($request->genres, $apps);
-
 
         return MediaListResource::collection($media);
     }
