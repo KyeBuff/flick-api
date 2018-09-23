@@ -23,14 +23,25 @@ class MediaController extends Controller
     {
         // $filtered_films = collect(MediaListResource::collection(Media::all()));
 
-        $genre = Genre::findOrFail($request->genres);
+        $genres = explode(',', $request->genres);
 
-        $media = $genre->media()
-            ->wherePivot('genre_id', '=', $request->genres)
-            ->get(); // execute the query
+        $mediaToReturn = new Collection([]);
 
+        foreach ($genres as $genre_id) {
+            $genre = Genre::find($genre_id);
 
-        return $media;
+            if(!$genre) {
+                continue;
+            }
+
+            $media = $genre->media()
+                ->wherePivot('genre_id', '=', $genre_id)
+                ->get(); // execute the query
+
+            $mediaToReturn = $mediaToReturn->merge($media);
+        }
+
+        return MediaListResource::collection($mediaToReturn);
 
     }
         // return ModulesCourseResource::collection($course->modules->sortBy('order'));
@@ -45,8 +56,6 @@ class MediaController extends Controller
     {
 
         $filtered_films = collect(MediaListResource::collection(Media::all()));
-
-
 
         return $filtered_films->filter(function ($film) {
             return $film['isFilm'];
