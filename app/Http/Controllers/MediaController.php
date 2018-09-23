@@ -21,54 +21,29 @@ class MediaController extends Controller
 
     public function index(Request $request)
     {
-        // $filtered_films = collect(MediaListResource::collection(Media::all()));
+        $media = Media::filterMedia($request->genres, $request->apps);
 
-        $genres = explode(',', $request->genres);
-
-        $mediaToReturn = new Collection([]);
-
-        foreach ($genres as $genre_id) {
-            $genre = Genre::find($genre_id);
-
-            if(!$genre) {
-                continue;
-            }
-
-            $media = $genre->media()
-                ->wherePivot('genre_id', '=', $genre_id)
-                ->get(); // execute the query
-
-            $mediaToReturn = $mediaToReturn->merge($media);
-        }
-
-        return MediaListResource::collection($mediaToReturn);
-
+        return MediaListResource::collection($media);
     }
-        // return ModulesCourseResource::collection($course->modules->sortBy('order'));
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function indexFilms()
+    public function indexFilms(Request $request)
     {
 
-        $filtered_films = collect(MediaListResource::collection(Media::all()));
+        $media = Media::filterFilms($request->genres, $request->apps);
 
-        return $filtered_films->filter(function ($film) {
-            return $film['isFilm'];
-        })->shuffle();
+        return MediaListResource::collection($media);
     }
 
-    public function indexSeries()
+    public function indexSeries(Request $request)
     {
-        $filtered_films = collect(MediaListResource::collection(Media::all()));
+        $media = Media::filterSeries($request->genres, $request->apps);
 
-        return $filtered_films->filter(function ($film) {
-            return !$film['isFilm'];
-        })->shuffle();
+        return MediaListResource::collection($media);
     }
 
     /**

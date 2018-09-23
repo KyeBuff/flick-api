@@ -18,7 +18,6 @@ class MediaListResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "img_url" => $this->img_url,
-            "isFilm" => $this->isFilm,
         ];
     }
 }
