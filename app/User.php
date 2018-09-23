@@ -29,4 +29,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function apps()
+    {
+        return $this->belongsToMany(App::class);
+    }
+
+    public function setApps($apps)
+    {
+        $this->apps()->sync($apps->pluck("id")->all());
+        return $this;
+    }
 }

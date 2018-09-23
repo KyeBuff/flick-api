@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class App extends Model
 {
-    protected $fillable = ["title", "icon"];
+    protected $fillable = ["title"];
 
     public function media()
 	{
@@ -26,4 +26,9 @@ class App extends Model
 	        return static::makeApp($app);
 	    });
 	}
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }	
 }

@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use App\App;
+use Illuminate\Support\Collection;
+
 class AuthController extends Controller
 {
     /**
@@ -91,5 +94,14 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    public function storeAppsToUser(Request $request) 
+    {
+        $apps = App::parse($request->get("apps"));
+
+        $request->user()->setApps($apps);
+
+        return $apps;
     }
 }
