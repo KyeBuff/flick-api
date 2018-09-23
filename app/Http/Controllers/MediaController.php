@@ -25,7 +25,10 @@ class MediaController extends Controller
 
     public function index(Request $request)
     {
-        $media = Media::filterMedia($request->genres, $request->apps);
+
+        $apps = $request->apps ? explode(',', $request->apps) : null;
+
+        $media = Media::filterMedia($request->genres, $apps);
 
         return MediaListResource::collection($media);
     }
@@ -37,15 +40,18 @@ class MediaController extends Controller
      */
     public function indexFilms(Request $request)
     {
+        $apps = $request->apps ? explode(',', $request->apps) : null;
 
-        $media = Media::filterFilms($request->genres, $request->apps);
+        $media = Media::filterFilms($request->genres, $apps);
+
 
         return MediaListResource::collection($media);
     }
 
     public function indexSeries(Request $request)
     {
-        $media = Media::filterSeries($request->genres, $request->apps);
+        $apps = $request->apps ? explode(',', $request->apps) : null;
+        $media = Media::filterSeries($request->genres, $apps);
 
         return MediaListResource::collection($media);
     }

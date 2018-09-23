@@ -48,16 +48,9 @@ class Media extends Model
                 $q->whereIn('genre_id', $genres);
             });
         }
-
         if($apps) {
-            if(is_string($apps)) {
-                $apps = explode(',', $apps);
-            }
-
             if($media) {
-                $media->whereHas('apps', function ($q) use ($apps) { 
-                    $q->whereIn('app_id', $apps);
-                });
+                $media = Media::queryData($apps, $media, 'app');
             } else {
                 $media = Media::whereHas('apps', function ($q) use ($apps) { 
                     $q->whereIn('app_id', $apps);
@@ -78,20 +71,11 @@ class Media extends Model
 
         if($genres) {
             $genres = explode(',', $genres);
-
-            $media = $media::whereHas('genres', function ($q) use ($genres) {
-                $q->whereIn('genre_id', $genres);
-            });
+            $media = Media::queryData($genres, $media, 'genre');
         }
 
         if($apps) {
-            if(is_string($apps)) {
-                $apps = explode(',', $apps);
-            }
-
-            $media = $media->whereHas('apps', function ($q) use ($apps) { 
-                $q->whereIn('app_id', $apps);
-            });
+            $media = Media::queryData($apps, $media, 'app');
         }
 
         return $media->get();
@@ -107,23 +91,19 @@ class Media extends Model
 
         if($genres) {
             $genres = explode(',', $genres);
-
-            $media = $media::whereHas('genres', function ($q) use ($genres) {
-                $q->whereIn('genre_id', $genres);
-            });
+            $media = Media::queryData($genres, $media, 'genre');
         }
 
         if($apps) {
-            
-            if(is_string($apps)) {
-                $apps = explode(',', $apps);
-            }
-
-            $media = $media->whereHas('apps', function ($q) use ($apps) { 
-                $q->whereIn('app_id', $apps);
-            });
+            $media = Media::queryData($apps, $media, 'app');
         }
 
         return $media->get();
+    }
+
+    private static function queryData($data, $query, $name) {
+        return $query->whereHas($name.'s', function ($q) use ($name, $data) { 
+            $q->whereIn($name.'_id', $data);
+        });
     }
 }
