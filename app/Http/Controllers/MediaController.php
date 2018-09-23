@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
+use Carbon\Carbon;
 use App\Media;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
@@ -53,7 +54,9 @@ class MediaController extends Controller
     {
         if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = Auth::user()->getApps();
+        $apps = collect(Auth::user()->getApps())->map(function($item) {
+            return $item['id'];
+        });
 
         $media = Media::filterMedia($request->genres, $apps);
 
@@ -69,9 +72,11 @@ class MediaController extends Controller
     {
         if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = Auth::user()->getApps();
+        $apps = collect(Auth::user()->getApps())->map(function($item) {
+            return $item['id'];
+        });
 
-        $media = Media::filterMedia($request->genres, $apps);
+        $media = Media::filterFilms($request->genres, $apps);
 
         return MediaListResource::collection($media);
     }
@@ -82,7 +87,7 @@ class MediaController extends Controller
 
         $apps = Auth::user()->getApps();
 
-        $media = Media::filterMedia($request->genres, $apps);
+        $media = Media::filterSeries($request->genres, $apps);
 
         return MediaListResource::collection($media);
     }

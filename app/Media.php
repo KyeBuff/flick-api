@@ -50,10 +50,19 @@ class Media extends Model
         }
 
         if($apps) {
-            $apps = is_array($apps) ? $apps : explode(',', $apps);
-            $media = $media->whereHas('apps', function ($q) use ($apps) { 
-                $q->whereIn('app_id', $apps);
-            });
+            if(is_string($apps)) {
+                $apps = explode(',', $apps);
+            }
+
+            if($media) {
+                $media->whereHas('apps', function ($q) use ($apps) { 
+                    $q->whereIn('app_id', $apps);
+                });
+            } else {
+                $media = Media::whereHas('apps', function ($q) use ($apps) { 
+                    $q->whereIn('app_id', $apps);
+                });
+            }
         }
 
         return $media->get();
@@ -70,13 +79,16 @@ class Media extends Model
         if($genres) {
             $genres = explode(',', $genres);
 
-            $media = Media::whereHas('genres', function ($q) use ($genres) {
+            $media = $media::whereHas('genres', function ($q) use ($genres) {
                 $q->whereIn('genre_id', $genres);
             });
         }
 
         if($apps) {
-            $apps = is_array($apps) ? $apps : explode(',', $apps);
+            if(is_string($apps)) {
+                $apps = explode(',', $apps);
+            }
+
             $media = $media->whereHas('apps', function ($q) use ($apps) { 
                 $q->whereIn('app_id', $apps);
             });
@@ -96,13 +108,17 @@ class Media extends Model
         if($genres) {
             $genres = explode(',', $genres);
 
-            $media = Media::whereHas('genres', function ($q) use ($genres) {
+            $media = $media::whereHas('genres', function ($q) use ($genres) {
                 $q->whereIn('genre_id', $genres);
             });
         }
 
         if($apps) {
-            $apps = is_array($apps) ? $apps : explode(',', $apps);
+            
+            if(is_string($apps)) {
+                $apps = explode(',', $apps);
+            }
+
             $media = $media->whereHas('apps', function ($q) use ($apps) { 
                 $q->whereIn('app_id', $apps);
             });
