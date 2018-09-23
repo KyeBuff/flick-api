@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\MediaRequest;
 use App\Media;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
@@ -52,9 +53,8 @@ class MediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MediaRequest $request)
     {
-        
         $data = $request->only(["title", "synopsis", "isFilm", "img_url", "genres", "apps"]);
         
         $genres = Genre::parse($request->get("genres"));

@@ -16,14 +16,14 @@ class CreateMediaTable extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
-            $table->longText('synopsis');
+            $table->longText('synopsis')->nullable();
             $table->boolean('isFilm');   
-            $table->string('img_url')->default('http://flick.test/');
+            $table->string('img_url')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
+    /*
      * Reverse the migrations.
      *
      * @return void
