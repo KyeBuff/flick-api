@@ -23,28 +23,12 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::post('user/apps', 'AuthController@storeAppsToUser');
         Route::get('user/apps', 'AuthController@indexApps');
+
+   		Route::get("media", "MediaController@authIndex"); 
+   		Route::get("films", "MediaController@authIndexFilms"); 
+   		Route::get("series", "MediaController@authIndexSeries"); 
     });
 });
-
-/********************************************************
-USERS
-********************************************************/
-// $router->group(["prefix" => "user"], function ($router) {
-// 	/*********************************
-// 	GET
-// 	*********************************/
-//     $router->get("", "Users@getUser"); 
-//     $router->get("apps", "Users@getApps");
-//     $router->get("genres", "Users@getGenres");
-
-// 	/*********************************
-// 	POST/PUT
-// 	*********************************/
-//     $router->post("", "Users@store"); 
-//     $router->put("apps", "Users@setApps");
-//     $router->put("genres", "Users@setGenres");
-
-// });
 
 /********************************************************
 MEDIA

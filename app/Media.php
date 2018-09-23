@@ -33,39 +33,81 @@ class Media extends Model
         return $this;
     }
 
-    public static function filterMedia(string $genres, string $apps) 
+    public static function filterMedia($genres, $apps) 
     {
-        $genres = explode(',', $genres);
-        $apps = explode(',', $apps);
+        if(!$genres && !$apps) {
+            return Media::get();
+        }
 
-        return Media::whereHas('genres', function ($q) use ($genres) {
-            $q->whereIn('genre_id', $genres);
-        })->whereHas('apps', function ($q) use ($apps) { 
-            $q->whereIn('app_id', $apps);
-        })->get();
+        $media = null;
+
+        if($genres) {
+            $genres = explode(',', $genres);
+
+            $media = Media::whereHas('genres', function ($q) use ($genres) {
+                $q->whereIn('genre_id', $genres);
+            });
+        }
+
+        if($apps) {
+            $apps = is_array($apps) ? $apps : explode(',', $apps);
+            $media = $media->whereHas('apps', function ($q) use ($apps) { 
+                $q->whereIn('app_id', $apps);
+            });
+        }
+
+        return $media->get();
     }
 
-    public static function filterFilms(string $genres, string $apps) 
+    public static function filterFilms($genres, $apps) 
     {
-        $genres = explode(',', $genres);
-        $apps = explode(',', $apps);
+        if(!$genres && !$apps) {
+            return Media::where('isFilm', 1)->get();
+        }
 
-        return Media::where('isFilm', 1)->whereHas('genres', function ($q) use ($genres) {
-            $q->whereIn('genre_id', $genres);
-        })->whereHas('apps', function ($q) use ($apps) { 
-            $q->whereIn('app_id', $apps);
-        })->get();
+        $media = Media::where('isFilm', 1);
+
+        if($genres) {
+            $genres = explode(',', $genres);
+
+            $media = Media::whereHas('genres', function ($q) use ($genres) {
+                $q->whereIn('genre_id', $genres);
+            });
+        }
+
+        if($apps) {
+            $apps = is_array($apps) ? $apps : explode(',', $apps);
+            $media = $media->whereHas('apps', function ($q) use ($apps) { 
+                $q->whereIn('app_id', $apps);
+            });
+        }
+
+        return $media->get();
     }
 
-    public static function filterSeries(string $genres, string $apps) 
+    public static function filterSeries($genres, $apps) 
     {
-        $genres = explode(',', $genres);
-        $apps = explode(',', $apps);
+        if(!$genres && !$apps) {
+            return Media::where('isFilm', 0)->get();
+        }
+        
+        $media = Media::where('isFilm', 0);
 
-        return Media::where('isFilm', 0)->whereHas('genres', function ($q) use ($genres) {
-            $q->whereIn('genre_id', $genres);
-        })->whereHas('apps', function ($q) use ($apps) { 
-            $q->whereIn('app_id', $apps);
-        })->get();
+        if($genres) {
+            $genres = explode(',', $genres);
+
+            $media = Media::whereHas('genres', function ($q) use ($genres) {
+                $q->whereIn('genre_id', $genres);
+            });
+        }
+
+        if($apps) {
+            $apps = is_array($apps) ? $apps : explode(',', $apps);
+            $media = $media->whereHas('apps', function ($q) use ($apps) { 
+                $q->whereIn('app_id', $apps);
+            });
+        }
+
+        return $media->get();
     }
 }

@@ -10,7 +10,6 @@ use App\Http\Resources\AppListResource;
 
 class AuthController extends Controller
 {
-
     public function indexApps(Request $request)
     {
         $apps = $request->user()->getApps();

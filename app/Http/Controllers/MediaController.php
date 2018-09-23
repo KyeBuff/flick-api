@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
 use App\Media;
@@ -9,6 +10,7 @@ use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
 use App\App;
+use App\User;
 
 use Illuminate\Support\Collection;
 
@@ -43,6 +45,44 @@ class MediaController extends Controller
     public function indexSeries(Request $request)
     {
         $media = Media::filterSeries($request->genres, $request->apps);
+
+        return MediaListResource::collection($media);
+    }
+
+    public function authIndex(Request $request)
+    {
+        if (!Auth::user()) abort(401, "Unauthorized.");
+
+        $apps = Auth::user()->getApps();
+
+        $media = Media::filterMedia($request->genres, $apps);
+
+        return MediaListResource::collection($media);
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function authIndexFilms(Request $request)
+    {
+        if (!Auth::user()) abort(401, "Unauthorized.");
+
+        $apps = Auth::user()->getApps();
+
+        $media = Media::filterMedia($request->genres, $apps);
+
+        return MediaListResource::collection($media);
+    }
+
+    public function authIndexSeries(Request $request)
+    {
+        if (!Auth::user()) abort(401, "Unauthorized.");
+
+        $apps = Auth::user()->getApps();
+
+        $media = Media::filterMedia($request->genres, $apps);
 
         return MediaListResource::collection($media);
     }
