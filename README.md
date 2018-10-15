@@ -6,6 +6,8 @@ git clone git@github.com:KyeBuff/flick-api.git`
 ```
 
 In the flick-api directory run:
+
+The below command requires composer to be installed.
 ```
 composer require laravel/homestead --dev
 ```
@@ -17,6 +19,44 @@ Consider editing the IP address and mapped domain in the Homstead.yaml file to a
 
 ```
 vagrant up
+```
+
+```
+vagrant ssh
+```
+
+```
+cd code
+```
+
+```
+composer install
+```
+
+Copy the .env.example file and save it as .env.
+
+```
+artisan migrate
+```
+
+```
+artisan key:generate
+```
+
+```
+php artisan make:auth 
+```
+
+```
+artisan migrate:fresh
+```
+
+```
+artisan passport:install --force
+```
+
+```
+artisan migrate:fresh
 ```
 
 # API documentation
