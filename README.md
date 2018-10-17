@@ -10,8 +10,8 @@ Users can click the 'Flick' button on the front end, which requests a random col
 I'm using Laravel because Eloquent is a top of the range ORM, which is going to be heavily utilised when dealing with this [challenge](#challenges). It's also a framework that I feel comfortable with having studied it on the Coding Fellowship.
 
 ## Table of Contents
-1. [Challenges and Nice Features](#challenges-and-nice-Features)
-2. [What have I learned so far?](#what-have-i-learned-so-far?)
+1. [Challenges and Nice Features](#challenges-and-nice-features)
+2. [What have I learned so far?](#what-have-i-learned-so-far)
 3. [Setup](#setup)
 2. [Documentation](#documentation)
 
