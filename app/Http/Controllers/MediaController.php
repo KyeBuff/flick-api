@@ -41,7 +41,7 @@ class MediaController extends Controller
     {
         $apps = $request->apps ? explode(',', $request->apps) : null;
 
-        $media = Media::filterFilms($request->genres, $apps);
+        $media = Media::filterBy($request->genres, $apps, 1);
 
         return MediaListResource::collection($media);
     }
@@ -49,7 +49,7 @@ class MediaController extends Controller
     public function indexSeries(Request $request)
     {
         $apps = $request->apps ? explode(',', $request->apps) : null;
-        $media = Media::filterSeries($request->genres, $apps);
+        $media = Media::filterBy($request->genres, $apps, 0);
 
         return MediaListResource::collection($media);
     }
@@ -76,7 +76,7 @@ class MediaController extends Controller
 
         $apps = collect(Auth::user()->getApps());
 
-        $media = Media::filterFilms($request->genres, $apps);
+        $media = Media::filterBy($request->genres, $apps, 1);
 
         return MediaListResource::collection($media);
     }
@@ -87,7 +87,7 @@ class MediaController extends Controller
 
         $apps = Auth::user()->getApps();
 
-        $media = Media::filterSeries($request->genres, $apps);
+        $media = Media::filterBy($request->genres, $apps, 0);
 
         return MediaListResource::collection($media);
     }

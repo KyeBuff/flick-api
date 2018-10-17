@@ -42,8 +42,30 @@ class Media extends Model
         return $seed;
     }
 
+    public static function filterBy($genres, $apps, $isFilm) 
+    {
+       if(!$genres && !$apps) {
+            return Media::where('isFilm', $isFilm)->inRandomOrder(Media::randomSeed())->paginate(15);
+        }
+        
+        $media = Media::where('isFilm', $isFilm);
+
+        if($genres) {
+            $genres = explode(',', $genres);
+            $media = Media::queryData($genres, $media, 'genre');
+        }
+
+        if($apps) {
+            $media = Media::queryData($apps, $media, 'app');
+        }
+
+        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
+    }
+
     public static function filterMedia($genres, $apps) 
     {
+
+
         if(!$genres && !$apps) {
             return Media::inRandomOrder(Media::randomSeed())->paginate(15);
         }
@@ -65,46 +87,6 @@ class Media extends Model
                     $q->whereIn('app_id', $apps);
                 });
             }
-        }
-
-        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
-    }
-
-    public static function filterFilms($genres, $apps) 
-    {
-        if(!$genres && !$apps) {
-            return Media::where('isFilm', 1)->inRandomOrder(Media::randomSeed())->paginate(15);
-        }
-
-        $media = Media::where('isFilm', 1);
-
-        if($genres) {
-            $genres = explode(',', $genres);
-            $media = Media::queryData($genres, $media, 'genre');
-        }
-
-        if($apps) {
-            $media = Media::queryData($apps, $media, 'app');
-        }
-
-        return $media->inRandomOrder(Media::randomSeed())->paginate(15);
-    }
-
-    public static function filterSeries($genres, $apps) 
-    {
-        if(!$genres && !$apps) {
-            return Media::where('isFilm', 0)->inRandomOrder(Media::randomSeed())->paginate(15);
-        }
-        
-        $media = Media::where('isFilm', 0);
-
-        if($genres) {
-            $genres = explode(',', $genres);
-            $media = Media::queryData($genres, $media, 'genre');
-        }
-
-        if($apps) {
-            $media = Media::queryData($apps, $media, 'app');
         }
 
         return $media->inRandomOrder(Media::randomSeed())->paginate(15);
