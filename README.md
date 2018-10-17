@@ -3,6 +3,8 @@
 
 The idea behind Flick is that users can tell us which apps they currently use to watch movies and TV series and we return a random collection of titles available on those apps and within the boundaries of their preferences. 
 
+For a very basic demonstration of the Flick app click <a href="http://kyebuffery.co.uk/flick-demo">here</a>.
+
 The Flick API is reponsible for handling POST requests that have been sent by my streaming platform web scrapers and then serving that data to the Flick app. Each POST request represents a film or TV series available on that platform.
 
 Users can click the 'Flick' button on the front end, which requests a random collection of media titles from the API. 
