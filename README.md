@@ -42,7 +42,7 @@ I have created filterMedia and filterBy methods of the Media model which can han
 
 This is the first time THAT I have deployed an API before and I'd heard good things about AWS and Elastic Beanstalk. I followed <a href="https://www.youtube.com/watch?v=ISVaMijczKc" target="_blank">this</a> tutorial on YouTube which helped me better understand the deployment process. I have since setup the ability to SSH into my EC2 instance and have ran artisan commands on the server.
 
-Next I'll be looking at how I can use AWS CLI tools so I can move away from the UI, especially as the UX is pretty bad.
+Next I'll be looking at how I can use AWS CLI tools so I can move away from the AWS UI.
 
 ## What have I learned so far?
 
