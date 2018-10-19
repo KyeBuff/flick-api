@@ -49,7 +49,7 @@ class AuthController extends Controller
      * @return [string] token_type
      * @return [string] expires_at
      */
-    public function login(Request $request)
+    public function login(UserRequest $request)
     {
         $credentials = request(['email', 'password']);
 
@@ -88,7 +88,7 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
         return response()->json([
-            'message' => 'Successfully logged out'
+            'logged_out' => true
         ]);
     }
   

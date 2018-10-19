@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthTest extends TestCase
 {
@@ -141,6 +143,22 @@ class AuthTest extends TestCase
                 'access_token' => true,
                 'token_type' => 'Bearer',
                 "expires_at" => Carbon::now()->addHours(2)
+            ]);
+    }
+
+    public function testLogout()
+    {
+        $user = factory(User::class)->create();
+
+        Auth::login($user);
+
+        $response = $this->actingAs($user, 'api')
+                         ->get('api/auth/logout');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'logged_out' => true,
             ]);
     }
 }
