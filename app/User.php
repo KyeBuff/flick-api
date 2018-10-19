@@ -30,6 +30,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function createUser($data) 
+    {
+        $exists = User::where("email", $data['email'])->first();
+
+        if(!$exists) {
+            $user = new User($data);
+            $user->save();    
+        }
+
+        return $exists;
+    }
+
     public function apps()
     {
         return $this->belongsToMany(App::class);

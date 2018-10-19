@@ -18,7 +18,7 @@ class CreateMediaTable extends Migration
             $table->string('title', 100);
             $table->longText('synopsis')->nullable();
             $table->boolean('isFilm');   
-            $table->string('img_url', 100000)->nullable();
+            $table->string('img_url', 10000)->nullable();
             $table->timestamps();
         });
     }

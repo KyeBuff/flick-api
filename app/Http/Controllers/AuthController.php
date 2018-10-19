@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use App\Http\Requests\UserRequest;
 use App\App;
 use Illuminate\Support\Collection;
 use App\Http\Resources\AppListResource;
@@ -25,21 +26,20 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request)
+    public function signup(UserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
-        ]);
-        $user = new User([
+        $user_exists = User::createUser([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-        $user->save();
+
+        if($user_exists) {
+            // TODO send email
+        }
+
         return response()->json([
-            'message' => 'Successfully created user!'
+            'created' => true
         ], 201);
     }
   
