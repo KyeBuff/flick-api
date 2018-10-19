@@ -32,14 +32,22 @@ class User extends Authenticatable
 
     public static function createUser($data) 
     {
-        $exists = User::where("email", $data['email'])->first();
+        $email = $data['email'];
+        $exists = User::where("email", $email)->first();
 
         if(!$exists) {
             $user = new User($data);
             $user->save();    
+        } else {
+            $email_body = "TODO";
+            $headers = [
+                'From' => 'noreply@flick.com',
+                'Reply-To' => 'accounts@flick.com',
+                'X-Mailer' => 'PHP/' . phpversion(),
+                'Content-type' => 'text/html; charset=iso-8859-1',
+                'MIME-Version' => '1.0'
+            ];
         }
-
-        return $exists;
     }
 
     public function apps()

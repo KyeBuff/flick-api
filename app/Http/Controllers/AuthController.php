@@ -28,15 +28,11 @@ class AuthController extends Controller
      */
     public function signup(UserRequest $request)
     {
-        $user_exists = User::createUser([
+        User::createUser([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-
-        if($user_exists) {
-            // TODO send email
-        }
 
         return response()->json([
             'created' => true
