@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthTest extends TestCase
 {
     /**
-     * Test user sign up
+     * Test new user sign up
      *
+     * @return void
      * @return void
      */
     public function testNewUserSignUp()
@@ -31,7 +32,11 @@ class AuthTest extends TestCase
                 'created' => true,
             ]);
     }
-
+    /**
+     * Test existing user sign up
+     *
+     * @return void
+     */
     public function testExistingUserSignUp()
     {
     	$response = $this->json('POST', 'api/auth/signup', [
@@ -48,7 +53,11 @@ class AuthTest extends TestCase
             ]);
     }
 
-
+    /**
+     * Test login - success
+     *
+     * @return void
+     */
     public function testLoginSuccess()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -65,7 +74,11 @@ class AuthTest extends TestCase
                 "expires_at" => true
             ]);
     }
-
+    /**
+     * Test login unknnown email
+     *
+     * @return void
+     */
     public function testLoginUnknownEmail()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -80,7 +93,11 @@ class AuthTest extends TestCase
                 'message' => "Unauthorized"
             ]);
     }
-
+    /**
+     * Test login incorrect password
+     *
+     * @return void
+     */
     public function testLoginIncorrectPassword()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -95,7 +112,11 @@ class AuthTest extends TestCase
                 'message' => "Unauthorized"
             ]);
     }
-
+    /**
+     * Test no credentials
+     *
+     * @return void
+     */
     public function testNoCredentials()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -110,7 +131,11 @@ class AuthTest extends TestCase
                 'message' => "Unauthorized"
             ]);
     }
-
+    /**
+     * Test login remember true
+     *
+     * @return void
+     */
     public function testLoginRemember()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -128,7 +153,11 @@ class AuthTest extends TestCase
             ]);
 
     }
-
+    /**
+     * Test login remember false
+     *
+     * @return void
+     */
     public function testLoginDontRemember()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -145,7 +174,11 @@ class AuthTest extends TestCase
                 "expires_at" => Carbon::now()->addHours(2)
             ]);
     }
-
+    /**
+     * Test logout
+     *
+     * @return void
+     */
     public function testLogout()
     {
         $user = factory(User::class)->create();
