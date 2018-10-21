@@ -199,8 +199,8 @@ class AuthTest extends TestCase
     {
         $this->createAuthenticatedUser();
 
-        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $this->token])
-                         ->get('api/auth/logout');
+        $response = $this->withHeaders($this->headers)
+                        ->get('api/auth/logout');
         $response
             ->assertStatus(200)
             ->assertJson([
