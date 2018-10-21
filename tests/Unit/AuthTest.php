@@ -21,6 +21,13 @@ class AuthTest extends TestCase
     private $user;
     private $token;
 
+
+    private function createAuthenticatedUser() 
+    {
+        $this->user = factory(User::class)->create();
+        $this->token =  $this->user->createToken('TestToken')->accessToken;
+    }
+    
     public function testNewUserSignUp()
     {
     	$response = $this->json('POST', 'api/auth/signup', [
@@ -178,10 +185,6 @@ class AuthTest extends TestCase
                 "expires_at" => Carbon::now()->addHours(2)
             ]);
     }
-    private function createAuthenticatedUser() 
-    {
-        $this->user = factory(User::class)->create();
-    }
     /**
      * Test logout
      *
@@ -191,9 +194,7 @@ class AuthTest extends TestCase
     {
         $this->createAuthenticatedUser();
 
-        $token = $this->user->createToken('TestToken')->accessToken;
-
-        $response = $this->withHeaders(['Authorization' => 'Bearer ' .$token])
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $this->token])
                          ->get('api/auth/logout');
         $response
             ->assertStatus(200)
