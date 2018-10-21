@@ -17,6 +17,10 @@ class AuthTest extends TestCase
      * @return void
      * @return void
      */
+
+    private $user;
+    private $token;
+
     public function testNewUserSignUp()
     {
     	$response = $this->json('POST', 'api/auth/signup', [
@@ -183,11 +187,10 @@ class AuthTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        Auth::login($user);
+        $token = $user->createToken('TestToken')->accessToken;
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' .$token])
                          ->get('api/auth/logout');
-
         $response
             ->assertStatus(200)
             ->assertJson([
