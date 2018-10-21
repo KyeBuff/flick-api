@@ -38,6 +38,22 @@ We want to ensure that users can download the app and get started without any ba
 
 I have created filterMedia and filterBy methods of the Media model which can handle the preferences of both authenticated and unauthenticated users. These methods take the user's preferences and then query the media_genre and media_app pivot tables so that it only returns titles that fall inline with the user's choices.
 
+### Testing auth endpoints with fake users
+
+Having recently picked up Cypress as a UI testing tool, I wanted to introduce unit tests to the Flick API. I had some difficulties testing the authenticated endpoints as a valid token needed to be present in the Authorization request header. 
+
+I created the createAuthenticatedUser method on my AuthTest class which runs before each unit test requiring an authenticated user. This is the first time that I have used a factory, a really useful tool for creating fake data based on models. The user data is stored against the class, which exposes that data to the rest of the methods performing the unit tests.
+
+
+```
+    private function createAuthenticatedUser() 
+    {
+        $this->user = factory(User::class)->create();
+        $this->token =  $this->user->createToken('TestToken')->accessToken;
+        $this->headers['Authorization'] = 'Bearer ' . $this->token;
+    }
+```
+
 ### API deployment to AWS
 
 This is the first time THAT I have deployed an API before and I'd heard good things about AWS and Elastic Beanstalk. I followed <a href="https://www.youtube.com/watch?v=ISVaMijczKc" target="_blank">this</a> tutorial on YouTube which helped me better understand the deployment process. I have since setup the ability to SSH into my EC2 instance and have ran artisan commands on the server.
@@ -48,6 +64,7 @@ Next I'll be looking at how I can use AWS CLI tools so I can move away from the 
 
 * How to build token authentication into an API using Laravel Passport
 * How to filter data by querying multple pivot tables, creating a reusable queryData function in the process
+* How to write unit tests with PHPUnit 
 * How to randomise data sets with Eloquent and Laravel collections
 * How to paginate data in laravel
 * How the API will handle multiple streaming platforms conceptually
