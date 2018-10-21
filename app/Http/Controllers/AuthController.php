@@ -26,16 +26,15 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(UserRequest $request)
+    public function signup(Request $request)
     {
         User::createUser([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-
         return response()->json([
-            'created' => true
+            'message' => 'Successfully created user!'
         ], 201);
     }
   
@@ -49,27 +48,21 @@ class AuthController extends Controller
      * @return [string] token_type
      * @return [string] expires_at
      */
-    public function login(UserRequest $request)
+    public function login(Request $request)
     {
         $credentials = request(['email', 'password']);
-
         if(!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);
-
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-
-        if ($request->remember_me) {
+        if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
-        } else {
+        else
             $token->expires_at = Carbon::now()->addHours(2);
-        }
-
         $token->save();
-
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
@@ -78,7 +71,6 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
-  
     /**
      * Logout user (Revoke the token)
      *
