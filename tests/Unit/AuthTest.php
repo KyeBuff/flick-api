@@ -20,14 +20,20 @@ class AuthTest extends TestCase
 
     private $user;
     private $token;
+    private $headers = [
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "Authorization" => null
+    ];
 
 
     private function createAuthenticatedUser() 
     {
         $this->user = factory(User::class)->create();
         $this->token =  $this->user->createToken('TestToken')->accessToken;
+        $this->headers['Authorization'] = 'Bearer ' . $this->token;
     }
-    
+
     public function testNewUserSignUp()
     {
     	$response = $this->json('POST', 'api/auth/signup', [
@@ -105,10 +111,13 @@ class AuthTest extends TestCase
             ]);
     }
     /**
+
+    *
      * Test login incorrect password
      *
      * @return void
      */
+     
     public function testLoginIncorrectPassword()
     {
         $response = $this->json('POST', 'api/auth/login', [
@@ -130,11 +139,7 @@ class AuthTest extends TestCase
      */
     public function testNoCredentials()
     {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "",
-           "password" => "",
-           "remember_me" => false,
-        ]);
+        $response = $this->json('POST', 'api/auth/login');
 
         $response
             ->assertStatus(401)
@@ -186,11 +191,11 @@ class AuthTest extends TestCase
             ]);
     }
     /**
-     * Test logout
+     * Test logout - auth
      *
      * @return void
      */
-    public function testLogout()
+    public function testLogoutAuthenticated()
     {
         $this->createAuthenticatedUser();
 
@@ -201,5 +206,19 @@ class AuthTest extends TestCase
             ->assertJson([
                 'logged_out' => true,
             ]);
+    }
+
+    /**
+     * Test logout - no auth
+     *
+     * @return void
+     */
+    public function testLogoutUnauthenticated()
+    {
+        $response = $this->withHeaders($this->headers)
+                         ->get('api/auth/logout');
+
+        $response
+            ->assertStatus(401);
     }
 }
