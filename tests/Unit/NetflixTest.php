@@ -171,4 +171,154 @@ class NetflixTest extends TestCase
                 'synopsis' => $this->title['synopsis'],
             ]);
     }
+    /**
+     * Test netflix title POST success
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPost()
+    {
+        $response = $this->json('POST', 'api/netflix/films', $this->title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'synopsis' => $this->title['synopsis'],
+                'img_url' => $this->title['img_url'],
+            ]);
+    }
+
+    /**
+     * Test netflix title POST without title
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostNoTitle()
+    {
+        $title = $this->title;
+        unset($title['title']);
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(422);
+    }
+
+    /**
+     * Test netflix title POST empty title
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostEmptyTitle()
+    {
+        $title = $this->title;
+        $title['title'] = '';
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(422);
+    }
+
+    /**
+     * Test netflix title POST without synopsis
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostNoSynopsis()
+    {
+        $title = $this->title;
+        unset($title['synopsis']);
+
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'img_url' => $this->title['img_url'],
+            ]);
+    }
+
+
+    /**
+     * Test netflix title POST empty title
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostEmptySynopsis()
+    {
+        $title = $this->title;
+        $title['synopsis'] = '';
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'synopsis' => $title['synopsis'],
+                'img_url' => $this->title['img_url'],
+            ]);
+    }
+
+    /**
+     * Test netflix title POST without image
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostNoImage()
+    {
+        $title = $this->title;
+        unset($title['img_url']);
+
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'synopsis' => $this->title['synopsis'],
+            ]);
+    }
+
+    /**
+     * Test netflix title POST without image
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostEmptyImage()
+    {
+        $title = $this->title;
+        $title['img_url'] = '';
+
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'img_url' =>  $title['img_url'],
+                'synopsis' => $this->title['synopsis'],
+            ]);
+    }
+
+    /**
+     * Test netflix title POST without genres
+     *
+     * @return void
+     */
+    public function testNetflixSeriesPostNoGenres()
+    {
+        $title = $this->title;
+        unset($title['genres']);
+
+        $response = $this->json('POST', 'api/netflix/series', $title);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'title' => $this->title['title'],
+                'img_url' => $this->title['img_url'],
+                'synopsis' => $this->title['synopsis'],
+            ]);
+    }
 }

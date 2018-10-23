@@ -17,6 +17,13 @@ class NfxController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    private function setGenresToTitle($title, $genres) 
+    {
+        $genres = Genre::parse($genres);
+        $title->setGenres($genres);
+    }
+
     public function storeFilm(MediaRequest $request)
     {
         $data = $request->only(["title", "synopsis", "img_url", "genres"]);
@@ -26,8 +33,7 @@ class NfxController extends Controller
         $title = NetflixFilm::create($data);
 
         if($genres) {
-            $genres = Genre::parse($request->get("genres"));
-            $title->setGenres($genres);
+            $this->setGenresToTitle($title, $genres);
         }
 
         return response($title, 201);
@@ -37,12 +43,14 @@ class NfxController extends Controller
     {
         $data = $request->only(["title", "synopsis", "img_url", "genres"]);
         
-        $genres = Genre::parse($request->get("genres"));
+        $genres = $request->get("genres");
 
         $title = NetflixSeries::create($data);
 
-        $title->setGenres($genres);
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
 
-        return response($title, 201);
+        return response($title, 201);   
     }
 }
