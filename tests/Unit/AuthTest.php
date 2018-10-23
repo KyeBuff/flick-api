@@ -26,6 +26,13 @@ class AuthTest extends TestCase
         "Authorization" => null
     ];
 
+    private $newUser = [
+       "name" => "Kye Buffery",
+       "email" => "kye@user.com",
+       "password" => "password",
+       "password_confirmation" => "password"
+    ];
+
 
     private function createAuthenticatedUser() 
     {
@@ -36,12 +43,7 @@ class AuthTest extends TestCase
 
     public function testNewUserSignUp()
     {
-    	$response = $this->json('POST', 'api/auth/signup', [
-		   "name" => "Kye Buffery",
-		   "email" => "kye@user.com",
-		   "password" => "password",
-		   "password_confirmation" => "password"
-    	]);
+    	$response = $this->json('POST', 'api/auth/signup', $this->newUser);
 
         $response
             ->assertStatus(201)
@@ -56,12 +58,9 @@ class AuthTest extends TestCase
      */
     public function testExistingUserSignUp()
     {
-    	$response = $this->json('POST', 'api/auth/signup', [
-		   "name" => "Kye Buffery",
-		   "email" => "kye@user.com",
-		   "password" => "password",
-		   "password_confirmation" => "password"
-    	]);
+        $this->testNewUserSignUp();
+
+    	$response = $this->json('POST', 'api/auth/signup', $this->newUser);
 
         $response
             ->assertStatus(201)
@@ -76,12 +75,15 @@ class AuthTest extends TestCase
      * @return void
      */
     public function testLoginSuccess()
-    {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "kye@user.com",
-           "password" => "password",
-           "remember_me" => false,
-        ]);
+    {   
+        $this->testNewUserSignUp();
+
+        $user = $this->newUser;
+
+        unset($user['password_confirmation']);
+        unset($user['name']);
+
+        $response = $this->json('POST', 'api/auth/login', $user);
 
         $response
             ->assertStatus(200)
@@ -92,18 +94,20 @@ class AuthTest extends TestCase
             ]);
     }
     /**
-     * Test login unknnown email
+     * Test login unknown email
      *
      * @return void
      */
     public function testLoginUnknownEmail()
     {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "unknown@user.com",
-           "password" => "password",
-           "remember_me" => false,
-        ]);
+        $this->testNewUserSignUp();
 
+        $this->testNewUserSignUp();
+        
+        $user = $this->newUser;
+        $user['email'] = 'test@unknown.com';
+
+        $response = $this->json('POST', 'api/auth/login', $user);
         $response
             ->assertStatus(401)
             ->assertJson([
@@ -120,11 +124,13 @@ class AuthTest extends TestCase
      
     public function testLoginIncorrectPassword()
     {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "kye@user.com",
-           "password" => "incorrect",
-           "remember_me" => false,
-        ]);
+
+        $this->testNewUserSignUp();
+
+        $user = $this->newUser;
+        $user['password'] = 'unknown';
+
+        $response = $this->json('POST', 'api/auth/login', $user);
 
         $response
             ->assertStatus(401)
@@ -154,11 +160,12 @@ class AuthTest extends TestCase
      */
     public function testLoginRemember()
     {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "kye@user.com",
-           "password" => "password",
-           "remember_me" => true,
-        ]);
+        $this->testNewUserSignUp();
+        
+        $user = $this->newUser;
+        $user['remember_me'] = true;
+
+        $response = $this->json('POST', 'api/auth/login', $user);
 
         $response
             ->assertStatus(200)
@@ -176,11 +183,12 @@ class AuthTest extends TestCase
      */
     public function testLoginDontRemember()
     {
-        $response = $this->json('POST', 'api/auth/login', [
-           "email" => "kye@user.com",
-           "password" => "password",
-           "remember_me" => false,
-        ]);
+        $this->testNewUserSignUp();
+        
+        $user = $this->newUser;
+        $user['remember_me'] = false;
+
+        $response = $this->json('POST', 'api/auth/login', $user);
 
         $response
             ->assertStatus(200)
