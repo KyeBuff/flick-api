@@ -52,6 +52,16 @@ $router->group(["prefix" => "media"], function ($router) {
     $router->post("", "MediaController@store"); 
 });
 
+
+/********************************************************
+Netflix
+********************************************************/
+
+$router->group(["prefix" => "netflix"], function ($router) {
+    $router->post("films", "NfxController@storeFilm"); 
+    $router->post("series", "NfxController@storeSeries"); 
+});
+
 /********************************************************
 APPS
 ********************************************************/
