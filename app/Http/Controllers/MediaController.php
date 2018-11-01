@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
 use Carbon\Carbon;
 use App\Media;
+use App\NetflixFilm;
+use App\NetflixSeries;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
@@ -111,6 +113,42 @@ class MediaController extends Controller
         $media->setApps($apps);
 
         return response($media, 201);
+    }
+
+    private function setGenresToTitle($title, $genres) 
+    {
+        $genres = Genre::parse($genres);
+        $title->setGenres($genres);
+    }
+
+    public function storeNetflixFilm(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = NetflixFilm::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);
+    }
+
+    public function storeNetflixSeries(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = NetflixSeries::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);   
     }
 
     /**

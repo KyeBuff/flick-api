@@ -58,8 +58,8 @@ Netflix
 ********************************************************/
 
 $router->group(["prefix" => "netflix"], function ($router) {
-    $router->post("films", "NfxController@storeFilm"); 
-    $router->post("series", "NfxController@storeSeries"); 
+    $router->post("films", "MediaController@storeNetflixFilm"); 
+    $router->post("series", "MediaController@storeNetflixSeries"); 
 });
 
 /********************************************************
