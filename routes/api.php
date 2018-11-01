@@ -56,10 +56,17 @@ $router->group(["prefix" => "media"], function ($router) {
 /********************************************************
 Netflix
 ********************************************************/
-
 $router->group(["prefix" => "netflix"], function ($router) {
     $router->post("films", "MediaController@storeNetflixFilm"); 
     $router->post("series", "MediaController@storeNetflixSeries"); 
+});
+
+/********************************************************
+Amazon
+********************************************************/
+$router->group(["prefix" => "amazon"], function ($router) {
+    $router->post("films", "MediaController@storeAmazonFilm"); 
+    $router->post("series", "MediaController@storeAmazonSeries"); 
 });
 
 /********************************************************
