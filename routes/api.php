@@ -86,6 +86,14 @@ $router->group(["prefix" => "itv"], function ($router) {
 });
 
 /********************************************************
+CFour
+********************************************************/
+$router->group(["prefix" => "c-four"], function ($router) {
+    $router->post("films", "MediaController@storeCFourFilm"); 
+    $router->post("series", "MediaController@storeCFourSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {

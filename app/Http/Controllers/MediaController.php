@@ -15,6 +15,8 @@ use App\BBCFilm;
 use App\BBCSeries;
 use App\ITVFilm;
 use App\ITVSeries;
+use App\CFourFilm;
+use App\CFourSeries;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
@@ -239,6 +241,36 @@ class MediaController extends Controller
         $genres = $request->get("genres");
 
         $title = ITVSeries::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);   
+    }
+
+    public function storeCFourFilm(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = CFourFilm::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);
+    }
+
+    public function storeCFourSeries(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = CFourSeries::create($data);
 
         if($genres) {
             $this->setGenresToTitle($title, $genres);
