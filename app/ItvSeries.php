@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class ItvFilm extends Model
+class ItvSeries extends Model
 {
     protected $fillable = ["title", "synopsis", "img_url"];
 
