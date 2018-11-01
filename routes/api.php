@@ -70,6 +70,14 @@ $router->group(["prefix" => "amazon"], function ($router) {
 });
 
 /********************************************************
+BBC
+********************************************************/
+$router->group(["prefix" => "bbc"], function ($router) {
+    $router->post("films", "MediaController@storeBBCFilm"); 
+    $router->post("series", "MediaController@storeBBCSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {

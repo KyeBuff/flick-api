@@ -11,6 +11,8 @@ use App\NetflixFilm;
 use App\NetflixSeries;
 use App\AmazonFilm;
 use App\AmazonSeries;
+use App\BBCFilm;
+use App\BBCSeries;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
@@ -159,7 +161,7 @@ class MediaController extends Controller
         
         $genres = $request->get("genres");
 
-    $title = AmazonFilm::create($data);
+        $title = AmazonFilm::create($data);
 
         if($genres) {
             $this->setGenresToTitle($title, $genres);
@@ -175,6 +177,36 @@ class MediaController extends Controller
         $genres = $request->get("genres");
 
         $title = AmazonSeries::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);   
+    }
+
+    public function storeBBCFilm(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = BBCFilm::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);
+    }
+
+    public function storeBBCSeries(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = BBCSeries::create($data);
 
         if($genres) {
             $this->setGenresToTitle($title, $genres);
