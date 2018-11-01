@@ -102,6 +102,14 @@ $router->group(["prefix" => "itunes"], function ($router) {
 });
 
 /********************************************************
+Google
+********************************************************/
+$router->group(["prefix" => "google"], function ($router) {
+    $router->post("films", "MediaController@storeGoogleFilm"); 
+    $router->post("series", "MediaController@storeGoogleSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {

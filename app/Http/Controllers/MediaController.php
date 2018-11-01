@@ -19,6 +19,8 @@ use App\CFourFilm;
 use App\CFourSeries;
 use App\iTunesFilm;
 use App\iTunesSeries;
+use App\GoogleFilm;
+use App\GoogleSeries;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
@@ -303,6 +305,36 @@ class MediaController extends Controller
         $genres = $request->get("genres");
 
         $title = iTunesSeries::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);   
+    }
+
+    public function storeGoogleFilm(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = GoogleFilm::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);
+    }
+
+    public function storeGoogleSeries(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = GoogleSeries::create($data);
 
         if($genres) {
             $this->setGenresToTitle($title, $genres);
