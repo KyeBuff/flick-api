@@ -78,6 +78,14 @@ $router->group(["prefix" => "bbc"], function ($router) {
 });
 
 /********************************************************
+ITV
+********************************************************/
+$router->group(["prefix" => "itv"], function ($router) {
+    $router->post("films", "MediaController@storeITVFilm"); 
+    $router->post("series", "MediaController@storeITVSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {
