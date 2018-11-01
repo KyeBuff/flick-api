@@ -410,4 +410,16 @@ class MediaController extends Controller
     {
         //
     }
+
+    /**
+     * Migrate all media into media table
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function migrate()
+    {   
+        return Media::migrate();
+        return response('Cool', 201);
+    }
 }

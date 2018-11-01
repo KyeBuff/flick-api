@@ -1,13 +1,29 @@
 <?php
 
 namespace App;
+use App\NetflixFilm;
+use App\NetflixSeries;
+use App\AmazonFilm;
+use App\AmazonSeries;
+use App\BBCFilm;
+use App\BBCSeries;
+use App\ITVFilm;
+use App\ITVSeries;
+use App\CFourFilm;
+use App\CFourSeries;
+use App\iTunesFilm;
+use App\iTunesSeries;
+use App\GoogleFilm;
+use App\GoogleSeries;
+use App\RakutenFilm;
+use App\RakutenSeries;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class Media extends Model
 {
-    protected $fillable = ["title", "synopsis", "isFilm", "img_url"];
+    protected $fillable = ["title", "synopsis", "img_url"];
 
     public function genres()
     {
@@ -31,6 +47,46 @@ class Media extends Model
         // update the pivot table with tag IDs
         $this->apps()->sync($apps->pluck("id")->all());    
         return $this;
+    }
+
+    private static function makeMedia($media)
+    {
+        // $exists = Media::where("title", $media->title)->first();
+
+        // if($exists) {
+
+        // }
+
+        $exists = false;
+
+        return $exists ? $exists : Media::create([
+            "title" => $media->title,
+            "synopsis" => $media->synopsis,
+            "img_url" => $media->img_url
+        ]);
+    }
+
+    private static function makeNetflixMedia() 
+    {
+        $netflix_films = NetflixFilm::all();
+        $netflix_series = NetflixSeries::all();
+
+        foreach ($netflix_films as $media) {
+            Media::makeMedia($media);
+        }
+
+        foreach ($netflix_films as $media) {
+            Media::makeMedia($media);
+        }
+    }
+
+    public static function migrate() 
+    {
+
+        Media::makeNetflixMedia();
+
+        return Media::all();
+
     }
 
     private static function randomSeed()
