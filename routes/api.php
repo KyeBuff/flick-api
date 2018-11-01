@@ -94,6 +94,14 @@ $router->group(["prefix" => "c-four"], function ($router) {
 });
 
 /********************************************************
+iTunes
+********************************************************/
+$router->group(["prefix" => "itunes"], function ($router) {
+    $router->post("films", "MediaController@storeiTunesFilm"); 
+    $router->post("series", "MediaController@storeiTunesSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {
