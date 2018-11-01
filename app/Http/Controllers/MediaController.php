@@ -21,6 +21,8 @@ use App\iTunesFilm;
 use App\iTunesSeries;
 use App\GoogleFilm;
 use App\GoogleSeries;
+use App\RakutenFilm;
+use App\RakutenSeries;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\MediaListResource;
 use App\Genre;
@@ -335,6 +337,36 @@ class MediaController extends Controller
         $genres = $request->get("genres");
 
         $title = GoogleSeries::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);   
+    }
+
+    public function storeRakutenFilm(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = RakutenFilm::create($data);
+
+        if($genres) {
+            $this->setGenresToTitle($title, $genres);
+        }
+
+        return response($title, 201);
+    }
+
+    public function storeRakutenSeries(MediaRequest $request)
+    {
+        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        
+        $genres = $request->get("genres");
+
+        $title = RakutenSeries::create($data);
 
         if($genres) {
             $this->setGenresToTitle($title, $genres);

@@ -110,6 +110,14 @@ $router->group(["prefix" => "google"], function ($router) {
 });
 
 /********************************************************
+Rakuten
+********************************************************/
+$router->group(["prefix" => "rakuten"], function ($router) {
+    $router->post("films", "MediaController@storeRakutenFilm"); 
+    $router->post("series", "MediaController@storeRakutenSeries"); 
+});
+
+/********************************************************
 APPS
 ********************************************************/
 $router->group(["prefix" => "apps"], function ($router) {
