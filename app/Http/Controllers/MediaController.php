@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\MediaRequest;
 use Carbon\Carbon;
-use App\Media;
+use App\MediaFilm;
+use App\MediaSeries;
 use App\NetflixFilm;
 use App\NetflixSeries;
 use App\AmazonFilm;
@@ -39,95 +40,95 @@ class MediaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index(Request $request)
-    {
-        $apps = $request->apps ? explode(',', $request->apps) : null;
+    // public function index(Request $request)
+    // {
+    //     $apps = $request->apps ? explode(',', $request->apps) : null;
 
-        $media = Media::filterMedia($request->genres, $apps);
+    //     $media = Media::filterMedia($request->genres, $apps);
 
-        return MediaListResource::collection($media);
-    }
+    //     return MediaListResource::collection($media);
+    // }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function indexFilms(Request $request)
-    {
-        $apps = $request->apps ? explode(',', $request->apps) : null;
+    // public function indexFilms(Request $request)
+    // {
+    //     $apps = $request->apps ? explode(',', $request->apps) : null;
 
-        $media = Media::filterBy($request->genres, $apps, 1);
+    //     $media = Media::filterBy($request->genres, $apps, 1);
 
-        return MediaListResource::collection($media);
-    }
+    //     return MediaListResource::collection($media);
+    // }
 
-    public function indexSeries(Request $request)
-    {
-        $apps = $request->apps ? explode(',', $request->apps) : null;
-        $media = Media::filterBy($request->genres, $apps, 0);
+    // public function indexSeries(Request $request)
+    // {
+    //     $apps = $request->apps ? explode(',', $request->apps) : null;
+    //     $media = Media::filterBy($request->genres, $apps, 0);
 
-        return MediaListResource::collection($media);
-    }
+    //     return MediaListResource::collection($media);
+    // }
 
-    public function authIndex(Request $request)
-    {
-        if (!Auth::user()) abort(401, "Unauthorized.");
+    // public function authIndex(Request $request)
+    // {
+    //     if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = collect(Auth::user()->getApps());
+    //     $apps = collect(Auth::user()->getApps());
 
-        $media = Media::filterMedia($request->genres, $apps);
+    //     $media = Media::filterMedia($request->genres, $apps);
 
-        return MediaListResource::collection($media);
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function authIndexFilms(Request $request)
-    {
-        if (!Auth::user()) abort(401, "Unauthorized.");
+    //     return MediaListResource::collection($media);
+    // }
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function authIndexFilms(Request $request)
+    // {
+    //     if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = collect(Auth::user()->getApps());
+    //     $apps = collect(Auth::user()->getApps());
 
-        $media = Media::filterBy($request->genres, $apps, 1);
+    //     $media = Media::filterBy($request->genres, $apps, 1);
 
-        return MediaListResource::collection($media);
-    }
+    //     return MediaListResource::collection($media);
+    // }
 
-    public function authIndexSeries(Request $request)
-    {
-        if (!Auth::user()) abort(401, "Unauthorized.");
+    // public function authIndexSeries(Request $request)
+    // {
+    //     if (!Auth::user()) abort(401, "Unauthorized.");
 
-        $apps = Auth::user()->getApps();
+    //     $apps = Auth::user()->getApps();
 
-        $media = Media::filterBy($request->genres, $apps, 0);
+    //     $media = Media::filterBy($request->genres, $apps, 0);
 
-        return MediaListResource::collection($media);
-    }
+    //     return MediaListResource::collection($media);
+    // }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(MediaRequest $request)
-    {
-        $data = $request->only(["title", "synopsis", "isFilm", "img_url", "genres", "apps"]);
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(MediaRequest $request)
+    // {
+    //     $data = $request->only(["title", "synopsis", "isFilm", "img_url", "genres", "apps"]);
         
-        $genres = Genre::parse($request->get("genres"));
-        $apps = App::parse($request->get("apps"));
+    //     $genres = Genre::parse($request->get("genres"));
+    //     $apps = App::parse($request->get("apps"));
 
-        $media = Media::create($data);
+    //     $media = Media::create($data);
 
-        $media->setGenres($genres);
-        $media->setApps($apps);
+    //     $media->setGenres($genres);
+    //     $media->setApps($apps);
 
-        return response($media, 201);
-    }
+    //     return response($media, 201);
+    // }
 
     private function setGenresToTitle($title, $genres) 
     {
@@ -419,7 +420,8 @@ class MediaController extends Controller
      */
     public function migrate()
     {   
-        return Media::migrate();
+        return MediaFilm::migrate();
+        return MediaSeries::migrate();
         return response('Cool', 201);
     }
 }

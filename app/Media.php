@@ -75,7 +75,7 @@ class Media extends Model
             Media::makeMedia($media);
         }
 
-        foreach ($netflix_films as $media) {
+        foreach ($netflix_series as $media) {
             Media::makeMedia($media);
         }
     }
