@@ -20,7 +20,7 @@ class MediaSeries extends Model
 {
     protected $fillable = ["title", "synopsis", "img_url", "apps", "genres"];
 
-       private function genres()
+    private function genres()
     {
         return $this->belongsToMany(Genre::class);
     }
@@ -46,7 +46,9 @@ class MediaSeries extends Model
 
     private function setGenresToMedia($media, $genres) 
     {
-        $genres = Genre::parse($genres);
+        if(!($genres instanceof Collection)) {
+            $genres = Genre::parse($genres);
+        }
         $media->setGenres($genres);
     }
 
@@ -56,7 +58,7 @@ class MediaSeries extends Model
         $media->setApps($app);
     }
 
-    private static function makeMedia($media, $app, $genres)
+    private static function makeMedia($media, $app, $genres = [])
     {
         // $exists = MediaSeries::where("title", $media->title)->first();
 
@@ -75,26 +77,95 @@ class MediaSeries extends Model
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
-            $new_media->setAppToMedia($new_media, $app);
+
+            $new_media->setAppToMedia($new_media, [$app]);
         }
 
     }
 
-    private static function makeNetflixMedia() 
+    public static function migrateNetflix() 
     {
-        $netflix_series = NetflixSeries::all();
+        $netflix_films = NetflixSeries::all();
 
-        foreach ($netflix_series as $media) {
+        foreach ($netflix_films as $media) {
             MediaSeries::makeMedia($media, "netflix", $media->genres);
         }
     }
 
-    public static function migrate() 
+    public static function migrateAmazon() 
     {
+        $amazon_films = AmazonSeries::all();
 
-        MediaSeries::makeNetflixMedia();
-
-        return MediaSeries::all();
-
+        foreach ($amazon_films as $media) {
+            MediaSeries::makeMedia($media, "amazon", $media->genres);
+        }
     }
+
+    public static function migrateBbc() 
+    {
+        $bbc_films = BBCSeries::all();
+
+        foreach ($bbc_films as $media) {
+            MediaSeries::makeMedia($media, "bbc", $media->genres);
+        }
+    }
+
+    public static function migrateItv() 
+    {
+        $itv_films = ITVSeries::all();
+
+        foreach ($itv_films as $media) {
+            MediaSeries::makeMedia($media, "itv", $media->genres);
+        }
+    }
+
+    public static function migrateCFour() 
+    {
+        $c_four_films = CFourSeries::all();
+
+        foreach ($c_four_films as $media) {
+            MediaSeries::makeMedia($media, "c-four", $media->genres);
+        }
+    }
+
+    public static function migrateiTunes() 
+    {
+        $i_tunes_films = iTunesSeries::all();
+
+        foreach ($i_tunes_films as $media) {
+            MediaSeries::makeMedia($media, "itunes", $media->genres);
+        }
+    }
+
+    public static function migrateGoogle() 
+    {
+        $google_films = GoogleSeries::all();
+
+        foreach ($google_films as $media) {
+            MediaSeries::makeMedia($media, "google", $media->genres);
+        }
+    }
+
+
+    public static function migrateRakuten() 
+    {
+        $rakuten_films = RakutenSeries::all();
+
+        foreach ($rakuten_films as $media) {
+            MediaSeries::makeMedia($media, "rakuten", $media->genres);
+        }
+    }
+
+    public static function migrateAll() 
+    {
+        MediaSeries::migrateNetflix(); 
+        MediaSeries::migrateAmazon(); 
+        MediaSeries::migrateBbc(); 
+        MediaSeries::migrateItv(); 
+        MediaSeries::migrateCFour(); 
+        MediaSeries::migrateiTunes(); 
+        MediaSeries::migrateGoogle(); 
+        MediaSeries::migrateRakuten(); 
+    }
+
 }

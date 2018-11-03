@@ -41,13 +41,20 @@ $router->group(["prefix" => "media"], function ($router) {
     $router->get("", "MediaController@index"); 
     $router->get("films", "MediaController@indexFilms"); 
     $router->get("series", "MediaController@indexSeries"); 
-    $router->get('migrate', "MediaController@migrate"); 
-    $router->get('{media}', "MediaController@show"); 
 
+    $router->get('migrate/all', "MediaController@migrateAll"); 
+    $router->get('migrate/netflix', "MediaController@migrateNetflix"); 
+    $router->get('migrate/amazon', "MediaController@migrateAmazon"); 
+    $router->get('migrate/bbc', "MediaController@migrateBbc"); 
+    $router->get('migrate/itv', "MediaController@migrateItv"); 
+    $router->get('migrate/c-four', "MediaController@migrateCFour"); 
+    $router->get('migrate/itunes', "MediaController@migrateiTunes"); 
+    $router->get('migrate/google', "MediaController@migrateGoogle"); 
+    $router->get('migrate/rakuten', "MediaController@migrateRakuten"); 
+    
+    $router->get('{media}', "MediaController@show"); 
     $router->get('{media}/apps', "Apps@mediaIndex"); 
     $router->get('{media}/genres', "Genres@mediaIndex"); 
-
-
 
 	/*********************************
 	POST/PUT

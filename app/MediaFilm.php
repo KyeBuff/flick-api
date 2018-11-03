@@ -83,7 +83,7 @@ class MediaFilm extends Model
 
     }
 
-    private static function makeNetflixMedia() 
+    public static function migrateNetflix() 
     {
         $netflix_films = NetflixFilm::all();
 
@@ -92,7 +92,7 @@ class MediaFilm extends Model
         }
     }
 
-    private static function makeAmazonMedia() 
+    public static function migrateAmazon() 
     {
         $amazon_films = AmazonFilm::all();
 
@@ -101,38 +101,71 @@ class MediaFilm extends Model
         }
     }
 
-    private static function makeBbcMedia() 
+    public static function migrateBbc() 
     {
-        $bbc_films = BbcFilm::all();
+        $bbc_films = BBCFilm::all();
 
         foreach ($bbc_films as $media) {
             MediaFilm::makeMedia($media, "bbc", $media->genres);
         }
     }
 
-    private static function makeItvMedia() 
+    public static function migrateItv() 
     {
-        $itv_films = ItvFilm::all();
+        $itv_films = ITVFilm::all();
 
         foreach ($itv_films as $media) {
             MediaFilm::makeMedia($media, "itv", $media->genres);
         }
     }
 
-    private static function makeCFourMedia() 
+    public static function migrateCFour() 
     {
-        $amazon_films = AmazonFilm::all();
+        $c_four_films = CFourFilm::all();
 
-        foreach ($amazon_films as $media) {
-            MediaFilm::makeMedia($media, "amazon", $media->genres);
+        foreach ($c_four_films as $media) {
+            MediaFilm::makeMedia($media, "c-four", $media->genres);
         }
     }
 
-    public static function migrate() 
+    public static function migrateiTunes() 
     {
-        MediaFilm::makeNetflixMedia();
+        $i_tunes_films = iTunesFilm::all();
 
-        return MediaFilm::all();
-
+        foreach ($i_tunes_films as $media) {
+            MediaFilm::makeMedia($media, "itunes", $media->genres);
+        }
     }
+
+    public static function migrateGoogle() 
+    {
+        $google_films = GoogleFilm::all();
+
+        foreach ($google_films as $media) {
+            MediaFilm::makeMedia($media, "google", $media->genres);
+        }
+    }
+
+
+    public static function migrateRakuten() 
+    {
+        $rakuten_films = RakutenFilm::all();
+
+        foreach ($rakuten_films as $media) {
+            MediaFilm::makeMedia($media, "rakuten", $media->genres);
+        }
+    }
+
+    public static function migrateAll() 
+    {
+        MediaFilm::migrateNetflix(); 
+        MediaFilm::migrateAmazon(); 
+        MediaFilm::migrateBbc(); 
+        MediaFilm::migrateItv(); 
+        MediaFilm::migrateCFour(); 
+        MediaFilm::migrateiTunes(); 
+        MediaFilm::migrateGoogle(); 
+        MediaFilm::migrateRakuten(); 
+    }
+
 }
