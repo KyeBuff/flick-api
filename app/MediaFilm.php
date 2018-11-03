@@ -25,9 +25,9 @@ class MediaFilm extends Model
         return $this->belongsToMany(Genre::class);
     }
 
-    private function mergeGenres($apps)
+    private function mergeGenres($genres)
     {
-        return new Collection($this->genres()->get());
+        return $this->genres()->get()->merge($genres);
     }
 
 
@@ -45,7 +45,7 @@ class MediaFilm extends Model
 
     private function mergeApps($apps)
     {
-        return new Collection($this->apps()->get());
+        return $this->apps()->get()->merge($apps);
     }
 
 
@@ -78,11 +78,10 @@ class MediaFilm extends Model
 
         if ($existing_media) {
 
-            $apps_merged = $existing_media->mergeApps($apps);
-            $genres_merged = $existing_media->mergeGenres($genres);
+            $apps_merged = App::parse([$apps])->merge($existing_media->apps()->get());
+            // $genres_merged = Genre::parse([$genres])->merge($existing_media->genres()->get());
 
-            $existing_media->setGenresToMedia($existing_media, $genres_merged);
-
+            // $existing_media->setGenresToMedia($existing_media, $genres_merged);
             $existing_media->setAppsToMedia($existing_media, $apps_merged);
 
         } else {
