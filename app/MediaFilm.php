@@ -10,6 +10,9 @@ use App\iTunesFilm;
 use App\GoogleFilm;
 use App\RakutenFilm;
 
+use App\App;
+use App\Genre;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 

@@ -10,6 +10,9 @@ use App\iTunesSeries;
 use App\GoogleSeries;
 use App\RakutenSeries;
 
+use App\App;
+use App\Genre;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
