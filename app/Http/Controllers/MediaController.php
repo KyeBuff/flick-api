@@ -424,63 +424,63 @@ class MediaController extends Controller
     public function migrateNetflix() 
     {
         MediaFilm::migrateNetflix();
-        MediaSeries::migrateNetflix();
+        // MediaSeries::migrateNetflix();
         return response('Succesful migration', 200);
     }
 
     public function migrateAmazon() 
     {
         MediaFilm::migrateAmazon();
-        MediaSeries::migrateAmazon();
+        // MediaSeries::migrateAmazon();
         return response('Succesful migration', 200);
     }
 
     public function migrateBbc() 
     {
         MediaFilm::migrateBbc();
-        MediaSeries::migrateBbc();
+        // MediaSeries::migrateBbc();
         return response('Succesful migration', 200);
     }
 
     public function migrateItv() 
     {
         MediaFilm::migrateItv();
-        MediaSeries::migrateItv();
+        // MediaSeries::migrateItv();
         return response('Succesful migration', 200);
     }
 
     public function migrateCFour() 
     {
         MediaFilm::migrateCFour();
-        MediaSeries::migrateCFour();
+        // MediaSeries::migrateCFour();
         return response('Succesful migration', 200);
     }
 
     public function migrateiTunes() 
     {
         MediaFilm::migrateiTunes();
-        MediaSeries::migrateiTunes();
+        // MediaSeries::migrateiTunes();
         return response('Succesful migration', 200);
     }
 
     public function migrateGoogle() 
     {
         MediaFilm::migrateGoogle();
-        MediaSeries::migrateGoogle();
+        // MediaSeries::migrateGoogle();
         return response('Succesful migration', 200);
     }
 
     public function migrateRakuten() 
     {
         MediaFilm::migrateRakuten();
-        MediaSeries::migrateRakuten();
+        // MediaSeries::migrateRakuten();
         return response('Succesful migration', 200);
     }
 
     public function migrateAll()
     {   
         MediaFilm::migrateAll();
-        MediaSeries::migrateAll();
+        // MediaSeries::migrateAll();
         return response('Succesful migration', 200);
     }
 }

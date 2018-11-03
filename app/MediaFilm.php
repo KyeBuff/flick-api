@@ -18,12 +18,18 @@ use Illuminate\Support\Collection;
 
 class MediaFilm extends Model
 {
-    protected $fillable = ["title", "synopsis", "img_url", "apps", "genres"];
+    protected $fillable = ["title", "synopsis", "img_url"];
 
     private function genres()
     {
         return $this->belongsToMany(Genre::class);
     }
+
+    private function mergeGenres($apps)
+    {
+        return new Collection($this->genres()->get());
+    }
+
 
     private function setGenres(Collection $genres)
     {
@@ -36,6 +42,12 @@ class MediaFilm extends Model
     {
         return $this->belongsToMany(App::class);
     }
+
+    private function mergeApps($apps)
+    {
+        return new Collection($this->apps()->get());
+    }
+
 
     private function setApps(Collection $apps)
     {
@@ -52,23 +64,27 @@ class MediaFilm extends Model
         $media->setGenres($genres);
     }
 
-    private function setAppToMedia($media, $app) 
+    private function setAppsToMedia($media, $apps) 
     {
-        $app = App::parse($app);
-        $media->setApps($app);
+        if(!($apps instanceof Collection)) {
+            $apps = App::parse($apps);
+        }
+        $media->setApps($apps);
     }
 
-    private static function makeMedia($media, $app, $genres = [])
+    private static function makeMedia($media, $apps, $genres = [])
     {
-        // $exists = MediaFilm::where("title", $media->title)->first();
+        $existing_media = MediaFilm::where("title", $media->title)->first();
 
-        // if($exists) {
+        if ($existing_media) {
 
-        // }
+            $apps_merged = $existing_media->mergeApps($apps);
+            $genres_merged = $existing_media->mergeGenres($genres);
 
-        $exists = false;
+            $existing_media->setGenresToMedia($existing_media, $genres_merged);
 
-        if ($exists) {
+            $existing_media->setAppsToMedia($existing_media, $apps_merged);
+
         } else {
             $new_media = MediaFilm::create([
                 "title" => $media->title,
@@ -78,7 +94,7 @@ class MediaFilm extends Model
 
             $new_media->setGenresToMedia($new_media, $genres);
 
-            $new_media->setAppToMedia($new_media, [$app]);
+            $new_media->setAppsToMedia($new_media, [$apps]);
         }
 
     }
