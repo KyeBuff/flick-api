@@ -18,8 +18,6 @@ class CreateMediaSeriesTable extends Migration
             $table->string('title', 100);
             $table->longText('synopsis')->nullable();
             $table->string('img_url', 10000)->nullable();
-            $table->json('apps');
-            $table->json('genres')->nullable();
             $table->timestamps();
         });
     }

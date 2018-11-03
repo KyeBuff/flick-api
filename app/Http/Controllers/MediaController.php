@@ -421,7 +421,7 @@ class MediaController extends Controller
     public function migrate()
     {   
         return MediaFilm::migrate();
-        return MediaSeries::migrate();
+        // return MediaSeries::migrate();
         return response('Cool', 201);
     }
 }

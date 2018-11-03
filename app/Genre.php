@@ -8,9 +8,14 @@ class Genre extends Model
 {
     protected $fillable = ["title"];
 
-    public function media()
+    public function mediaFilm()
 	{
-	    return $this->belongsToMany(Media::class);
+	    return $this->belongsToMany(MediaFilm::class);
+	}
+
+    public function mediaSeries()
+	{
+	    return $this->belongsToMany(MediaSeries::class);
 	}
 
 	private static function makeGenre($string)

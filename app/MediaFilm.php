@@ -46,7 +46,9 @@ class MediaFilm extends Model
 
     private function setGenresToMedia($media, $genres) 
     {
-        $genres = Genre::parse($genres);
+        if(!($genres instanceof Collection)) {
+            $genres = Genre::parse($genres);
+        }
         $media->setGenres($genres);
     }
 
@@ -56,7 +58,7 @@ class MediaFilm extends Model
         $media->setApps($app);
     }
 
-    private static function makeMedia($media, $app, $genres)
+    private static function makeMedia($media, $app, $genres = [])
     {
         // $exists = MediaFilm::where("title", $media->title)->first();
 
@@ -75,7 +77,8 @@ class MediaFilm extends Model
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
-            $new_media->setAppToMedia($new_media, $app);
+
+            $new_media->setAppToMedia($new_media, [$app]);
         }
 
     }
