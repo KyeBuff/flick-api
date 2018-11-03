@@ -17,10 +17,41 @@ class MediaFilm extends Model
 {
     protected $fillable = ["title", "synopsis", "img_url", "apps", "genres"];
 
-    protected $casts = [
-        'genres' => 'array',
-        'apps' => 'array'
-    ];
+    private function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
+
+    private function setGenres(Collection $genres)
+    {
+        // update the pivot table with tag IDs
+        $this->genres()->sync($genres->pluck("id")->all());    
+        return $this;
+    }
+
+    private function apps()
+    {
+        return $this->belongsToMany(App::class);
+    }
+
+    private function setApps(Collection $apps)
+    {
+        // update the pivot table with tag IDs
+        $this->apps()->sync($apps->pluck("id")->all());    
+        return $this;
+    }
+
+    private function setGenresToMedia($media, $genres) 
+    {
+        $genres = Genre::parse($genres);
+        $media->setGenres($genres);
+    }
+
+    private function setAppToMedia($media, $app) 
+    {
+        $app = App::parse($app);
+        $media->setApps($app);
+    }
 
     private static function makeMedia($media, $app, $genres)
     {
@@ -32,13 +63,18 @@ class MediaFilm extends Model
 
         $exists = false;
 
-        return $exists ? $exists : MediaFilm::create([
-            "title" => $media->title,
-            "synopsis" => $media->synopsis,
-            "img_url" => $media->img_url,
-            "genres" => $genres,
-            "apps" => [$app]
-        ]);
+        if ($exists) {
+        } else {
+            $new_media = MediaFilm::create([
+                "title" => $media->title,
+                "synopsis" => $media->synopsis,
+                "img_url" => $media->img_url,
+            ]);
+
+            $new_media->setGenresToMedia($new_media, $genres);
+            $new_media->setAppToMedia($new_media, $app);
+        }
+
     }
 
     private static function makeNetflixMedia() 
