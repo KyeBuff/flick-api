@@ -25,7 +25,6 @@ class MediaTest extends TestCase
         "title" => "Ozark", 
         "year" => 2000,
         "synopsis" => "A financial adviser drags his family from Chicago to the Missouri Ozarks, where he must launder $500 million in five years to appease a drug boss.", 
-        "img_url" => "https://occ-0-2585-299.1.nflxso.net/dnm/api/v5/rendition/.png", 
         "genres" => ["Series", "American Programmes", "US TV Dramas", "Drama Programmes", "Crime TV Dramas"]
     ];
     /**
@@ -43,7 +42,6 @@ class MediaTest extends TestCase
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
                 'synopsis' => $this->title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -93,7 +91,6 @@ class MediaTest extends TestCase
             ->assertJson([
                 'title' => $this->title['title'],
                 'synopsis' => $this->title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -143,7 +140,6 @@ class MediaTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'title' => $this->title['title'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -179,68 +175,8 @@ class MediaTest extends TestCase
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
                 'synopsis' => $title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
-
-    /**
-     * Test media POST without image
-     *
-     * @return void
-     */
-    public function testMediaFilmPostNoImage()
-    {
-        $title = $this->title;
-        unset($title['img_url']);
-
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/itunes/films', $title);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'title' => $this->title['title'],
-                'year' => $this->title['year'],
-                'synopsis' => $this->title['synopsis'],
-            ]);
-    }
-
-    /**
-     * Test media POST without image
-     *
-     * @return void
-     */
-    public function testMediaFilmPostEmptyImage()
-    {
-        $title = $this->title;
-        $title['img_url'] = '';
-
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/itv/films', $title);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'title' => $this->title['title'],
-                'year' => $this->title['year'],
-                'img_url' =>  $title['img_url'],
-                'synopsis' => $this->title['synopsis'],
-            ]);
-    }
-
-    /**
-     * Test media POST with incorrect img_url format string
-     *
-     * @return void
-     */
-    public function testMediaFilmPostImageFormat()
-    {
-        $title = $this->title;
-        $title['img_url'] = [];
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/amazon/films', $title);
-
-        $response
-            ->assertStatus(422);
-    }
-
     /**
      * Test media POST without genres
      *
@@ -258,7 +194,6 @@ class MediaTest extends TestCase
             ->assertJson([
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
-                'img_url' => $this->title['img_url'],
                 'synopsis' => $this->title['synopsis'],
             ]);
     }
@@ -292,7 +227,6 @@ class MediaTest extends TestCase
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
                 'synopsis' => $this->title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -342,7 +276,6 @@ class MediaTest extends TestCase
             ->assertJson([
                 'title' => $this->title['title'],
                 'synopsis' => $this->title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -355,7 +288,6 @@ class MediaTest extends TestCase
     {
         $title = $this->title;
         $title['year'] = 'incorrect year format';
-        dd($title);
         $response = $this->withHeaders($this->headers)->json('POST', 'api/amazon/series', $title);
 
         $response
@@ -393,7 +325,6 @@ class MediaTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'title' => $this->title['title'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
 
@@ -429,68 +360,8 @@ class MediaTest extends TestCase
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
                 'synopsis' => $title['synopsis'],
-                'img_url' => $this->title['img_url'],
             ]);
     }
-
-    /**
-     * Test media POST without image
-     *
-     * @return void
-     */
-    public function testMediaSeriesPostNoImage()
-    {
-        $title = $this->title;
-        unset($title['img_url']);
-
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/itunes/series', $title);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'title' => $this->title['title'],
-                'year' => $this->title['year'],
-                'synopsis' => $this->title['synopsis'],
-            ]);
-    }
-
-    /**
-     * Test media POST without image
-     *
-     * @return void
-     */
-    public function testMediaSeriesPostEmptyImage()
-    {
-        $title = $this->title;
-        $title['img_url'] = '';
-
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/itv/series', $title);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'title' => $this->title['title'],
-                'year' => $this->title['year'],
-                'img_url' =>  $title['img_url'],
-                'synopsis' => $this->title['synopsis'],
-            ]);
-    }
-
-    /**
-     * Test media POST with incorrect img_url format string
-     *
-     * @return void
-     */
-    public function testMediaSeriesPostImageFormat()
-    {
-        $title = $this->title;
-        $title['img_url'] = [];
-        $response = $this->withHeaders($this->headers)->json('POST', 'api/amazon/series', $title);
-
-        $response
-            ->assertStatus(422);
-    }
-
     /**
      * Test media POST without genres
      *
@@ -508,7 +379,6 @@ class MediaTest extends TestCase
             ->assertJson([
                 'title' => $this->title['title'],
                 'year' => $this->title['year'],
-                'img_url' => $this->title['img_url'],
                 'synopsis' => $this->title['synopsis'],
             ]);
     }
