@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 
 class MediaFilm extends Model
 {
-    protected $fillable = ["title", "synopsis", "img_url"];
+    protected $fillable = ["title", "year", "synopsis", "img_url"];
 
     private function genres()
     {
@@ -88,7 +88,7 @@ class MediaFilm extends Model
             $genres_merged = MediaFilm::mergeGenres($genres, $existing_media);
 
             // Recreates genres in the DB from a collection of titles
-            $genres_merged = Genre::parse($existing_genre_titles);
+            $genres_merged = Genre::parse($genres_merged);
 
             $apps_merged = MediaFilm::mergeApps($apps, $existing_media);
 

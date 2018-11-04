@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 
 class MediaSeries extends Model
 {
-    protected $fillable = ["title", "synopsis", "img_url", "apps", "genres"];
+    protected $fillable = ["title", "year", "synopsis", "img_url"];
 
     private function genres()
     {
@@ -32,9 +32,28 @@ class MediaSeries extends Model
         return $this;
     }
 
+    private static function mergeGenres($genres, $existing_media)
+    {
+        $genre_titles = $genres->map(function ($genre) {
+            return $genre->title;
+        });
+
+        $existing_genre_titles = $existing_media->genres()->get()->map(function ($genre) {
+            return $genre->title;
+        });
+
+        return $existing_genre_titles->merge($genre_titles);
+
+    }
+
     private function apps()
     {
         return $this->belongsToMany(App::class);
+    }
+
+    private static function mergeApps($apps, $existing_media)
+    {
+        return App::parse([$apps])->merge($existing_media->apps()->get());
     }
 
     private function setApps(Collection $apps)
@@ -52,23 +71,30 @@ class MediaSeries extends Model
         $media->setGenres($genres);
     }
 
-    private function setAppToMedia($media, $app) 
+    private function setAppsToMedia($media, $apps) 
     {
-        $app = App::parse($app);
-        $media->setApps($app);
+        if(!($apps instanceof Collection)) {
+            $apps = App::parse($apps);
+        }
+        $media->setApps($apps);
     }
 
-    private static function makeMedia($media, $app, $genres = [])
+    private static function makeMedia($media, $apps, $genres = [])
     {
-        // $exists = MediaSeries::where("title", $media->title)->first();
+        $existing_media = MediaSeries::where("title", $media->title)->first();
 
-        // if($exists) {
+        if ($existing_media) {
 
-        // }
+            $genres_merged = MediaSeries::mergeGenres($genres, $existing_media);
 
-        $exists = false;
+            // Recreates genres in the DB from a collection of titles
+            $genres_merged = Genre::parse($genres_merged);
 
-        if ($exists) {
+            $apps_merged = MediaSeries::mergeApps($apps, $existing_media);
+
+            $existing_media->setGenresToMedia($existing_media, $genres_merged);
+            $existing_media->setAppsToMedia($existing_media, $apps_merged);
+
         } else {
             $new_media = MediaSeries::create([
                 "title" => $media->title,
@@ -78,70 +104,70 @@ class MediaSeries extends Model
 
             $new_media->setGenresToMedia($new_media, $genres);
 
-            $new_media->setAppToMedia($new_media, [$app]);
+            $new_media->setAppsToMedia($new_media, [$apps]);
         }
 
     }
 
     public static function migrateNetflix() 
     {
-        $netflix_films = NetflixSeries::all();
+        $netflix_series = NetflixSeries::all();
 
-        foreach ($netflix_films as $media) {
+        foreach ($netflix_series as $media) {
             MediaSeries::makeMedia($media, "netflix", $media->genres);
         }
     }
 
     public static function migrateAmazon() 
     {
-        $amazon_films = AmazonSeries::all();
+        $amazon_series = AmazonSeries::all();
 
-        foreach ($amazon_films as $media) {
+        foreach ($amazon_series as $media) {
             MediaSeries::makeMedia($media, "amazon", $media->genres);
         }
     }
 
     public static function migrateBbc() 
     {
-        $bbc_films = BBCSeries::all();
+        $bbc_series = BBCSeries::all();
 
-        foreach ($bbc_films as $media) {
+        foreach ($bbc_series as $media) {
             MediaSeries::makeMedia($media, "bbc", $media->genres);
         }
     }
 
     public static function migrateItv() 
     {
-        $itv_films = ITVSeries::all();
+        $itv_series = ITVSeries::all();
 
-        foreach ($itv_films as $media) {
+        foreach ($itv_series as $media) {
             MediaSeries::makeMedia($media, "itv", $media->genres);
         }
     }
 
     public static function migrateCFour() 
     {
-        $c_four_films = CFourSeries::all();
+        $c_four_series = CFourSeries::all();
 
-        foreach ($c_four_films as $media) {
+        foreach ($c_four_series as $media) {
             MediaSeries::makeMedia($media, "c-four", $media->genres);
         }
     }
 
     public static function migrateiTunes() 
     {
-        $i_tunes_films = iTunesSeries::all();
+        $i_tunes_series = iTunesSeries::all();
 
-        foreach ($i_tunes_films as $media) {
+        foreach ($i_tunes_series as $media) {
             MediaSeries::makeMedia($media, "itunes", $media->genres);
         }
     }
 
     public static function migrateGoogle() 
     {
-        $google_films = GoogleSeries::all();
+        $google_series = GoogleSeries::all();
 
-        foreach ($google_films as $media) {
+        foreach ($google_series as $media) {
             MediaSeries::makeMedia($media, "google", $media->genres);
         }
     }
@@ -149,9 +175,9 @@ class MediaSeries extends Model
 
     public static function migrateRakuten() 
     {
-        $rakuten_films = RakutenSeries::all();
+        $rakuten_series = RakutenSeries::all();
 
-        foreach ($rakuten_films as $media) {
+        foreach ($rakuten_series as $media) {
             MediaSeries::makeMedia($media, "rakuten", $media->genres);
         }
     }

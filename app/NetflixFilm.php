@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class NetflixFilm extends Model
 {
-    protected $fillable = ["title", "synopsis", "img_url"];
+    protected $fillable = ["title", "year", "synopsis", "img_url"];
 
     public function genres()
     {
