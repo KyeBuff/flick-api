@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 use GuzzleHttp;
-
+use Config;
 
 class MediaFilm extends Model
 {
@@ -84,16 +84,22 @@ class MediaFilm extends Model
 
     private static function normalizeTitle($title)
     {
+        //Remove symbols
+        $title = preg_replace("/[-!$%^&*@#()_+|~=`{}\[\]:\";'<>?,.\/]/", '', $title);
+
+        // Lowercase and remove whitespace
         return strtolower(preg_replace('/\s+/', '', $title));
     }
 
     private static function getImageUrl($title) 
     {
 
-        $api_key = '7a910c69cc0be2f210022a399481d685';
-        $media_type = 'tv';
+        $api_key = Config::get('services.tmdb.api_key');
+        $api_url = Config::get('services.tmdb.endpoint');
+        
         $client = new GuzzleHttp\Client();
-        $res = $client->get('https://api.themoviedb.org/3/search/'.$media_type.'?api_key='.$api_key.'&query='.$title, [
+
+        $res = $client->get($api_url.'movie?api_key='.$api_key.'&query='.$title, [
             'headers' => [
                 'Accept' => 'application/json',
             ]
@@ -103,15 +109,22 @@ class MediaFilm extends Model
 
         $results = $response_body->results;
 
+        dd($results);
+
         if(count($results) === 1) {
             $poster = $results[0]->poster_path;
             return 'http://image.tmdb.org/t/p/w342'.$poster;
         } else {
             $results = collect($results);
             $results = $results->filter(function ($media, $index) use ($title) {
-                return MediaFilm::normalizeTitle($media->name) === MediaFilm::normalizeTitle($title);
+                return MediaFilm::normalizeTitle($media->title) === MediaFilm::normalizeTitle($title);
             });
-            $poster = $results[0]->poster_path;
+
+            if (count($results)) {
+                $poster = $results[0]->poster_path;
+            }
+
+            $poster = null;
             return 'http://image.tmdb.org/t/p/w342'.$poster;
         }
 

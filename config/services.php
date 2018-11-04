@@ -35,5 +35,9 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'tmdb' => [
+        'api_key' => '7a910c69cc0be2f210022a399481d685',
+        'endpoint' => 'https://api.themoviedb.org/3/search/',
+    ],
 
 ];
