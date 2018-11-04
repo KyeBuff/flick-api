@@ -16,10 +16,12 @@ class CreateiTunesSeriesTable extends Migration
         Schema::create('i_tunes_series', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
+            $table->integer('year')->unsigned()->nullable();
             $table->longText('synopsis')->nullable();
             $table->string('img_url', 10000)->nullable();
             $table->timestamps();
         });
+        
 
     }
 

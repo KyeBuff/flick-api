@@ -138,7 +138,7 @@ class MediaController extends Controller
 
     public function storeNetflixFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -153,7 +153,7 @@ class MediaController extends Controller
 
     public function storeNetflixSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -168,7 +168,7 @@ class MediaController extends Controller
 
     public function storeAmazonFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -183,7 +183,7 @@ class MediaController extends Controller
 
     public function storeAmazonSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -198,7 +198,7 @@ class MediaController extends Controller
 
     public function storeBBCFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -213,7 +213,7 @@ class MediaController extends Controller
 
     public function storeBBCSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -228,7 +228,7 @@ class MediaController extends Controller
 
     public function storeITVFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -243,7 +243,7 @@ class MediaController extends Controller
 
     public function storeITVSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -258,7 +258,7 @@ class MediaController extends Controller
 
     public function storeCFourFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -273,7 +273,7 @@ class MediaController extends Controller
 
     public function storeCFourSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -288,7 +288,7 @@ class MediaController extends Controller
 
     public function storeiTunesFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -303,7 +303,7 @@ class MediaController extends Controller
 
     public function storeiTunesSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -318,7 +318,7 @@ class MediaController extends Controller
 
     public function storeGoogleFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -333,7 +333,7 @@ class MediaController extends Controller
 
     public function storeGoogleSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -348,7 +348,7 @@ class MediaController extends Controller
 
     public function storeRakutenFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -363,7 +363,7 @@ class MediaController extends Controller
 
     public function storeRakutenSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -424,63 +424,63 @@ class MediaController extends Controller
     public function migrateNetflix() 
     {
         MediaFilm::migrateNetflix();
-        // MediaSeries::migrateNetflix();
+        MediaSeries::migrateNetflix();
         return response('Succesful migration', 200);
     }
 
     public function migrateAmazon() 
     {
         MediaFilm::migrateAmazon();
-        // MediaSeries::migrateAmazon();
+        MediaSeries::migrateAmazon();
         return response('Succesful migration', 200);
     }
 
     public function migrateBbc() 
     {
         MediaFilm::migrateBbc();
-        // MediaSeries::migrateBbc();
+        MediaSeries::migrateBbc();
         return response('Succesful migration', 200);
     }
 
     public function migrateItv() 
     {
         MediaFilm::migrateItv();
-        // MediaSeries::migrateItv();
+        MediaSeries::migrateItv();
         return response('Succesful migration', 200);
     }
 
     public function migrateCFour() 
     {
         MediaFilm::migrateCFour();
-        // MediaSeries::migrateCFour();
+        MediaSeries::migrateCFour();
         return response('Succesful migration', 200);
     }
 
     public function migrateiTunes() 
     {
         MediaFilm::migrateiTunes();
-        // MediaSeries::migrateiTunes();
+        MediaSeries::migrateiTunes();
         return response('Succesful migration', 200);
     }
 
     public function migrateGoogle() 
     {
         MediaFilm::migrateGoogle();
-        // MediaSeries::migrateGoogle();
+        MediaSeries::migrateGoogle();
         return response('Succesful migration', 200);
     }
 
     public function migrateRakuten() 
     {
         MediaFilm::migrateRakuten();
-        // MediaSeries::migrateRakuten();
+        MediaSeries::migrateRakuten();
         return response('Succesful migration', 200);
     }
 
     public function migrateAll()
     {   
         MediaFilm::migrateAll();
-        // MediaSeries::migrateAll();
+        MediaSeries::migrateAll();
         return response('Succesful migration', 200);
     }
 }

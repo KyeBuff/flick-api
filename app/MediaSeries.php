@@ -98,6 +98,7 @@ class MediaSeries extends Model
         } else {
             $new_media = MediaSeries::create([
                 "title" => $media->title,
+                "year" => $media->year,
                 "synopsis" => $media->synopsis,
                 "img_url" => $media->img_url,
             ]);

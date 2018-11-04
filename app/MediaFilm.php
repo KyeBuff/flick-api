@@ -98,6 +98,7 @@ class MediaFilm extends Model
         } else {
             $new_media = MediaFilm::create([
                 "title" => $media->title,
+                "year" => $media->year,
                 "synopsis" => $media->synopsis,
                 "img_url" => $media->img_url,
             ]);
