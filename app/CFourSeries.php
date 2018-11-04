@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class CFourSeries extends Model
 {
-    protected $fillable = ["title", "year", "synopsis", "img_url"];
+    protected $fillable = ["title", "year", "synopsis"];
 
     public function genres()
     {
