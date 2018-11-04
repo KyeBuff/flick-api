@@ -16,6 +16,9 @@ use App\Genre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+use GuzzleHttp;
+
+
 class MediaFilm extends Model
 {
     protected $fillable = ["title", "year", "synopsis", "img_url"];
@@ -79,6 +82,41 @@ class MediaFilm extends Model
         $media->setApps($apps);
     }
 
+    private static function normalizeTitle($title)
+    {
+        return strtolower(preg_replace('/\s+/', '', $title));
+    }
+
+    private static function getImageUrl($title) 
+    {
+
+        $api_key = '7a910c69cc0be2f210022a399481d685';
+        $media_type = 'tv';
+        $client = new GuzzleHttp\Client();
+        $res = $client->get('https://api.themoviedb.org/3/search/'.$media_type.'?api_key='.$api_key.'&query='.$title, [
+            'headers' => [
+                'Accept' => 'application/json',
+            ]
+        ]);
+
+        $response_body = json_decode($res->getBody()->getContents());
+
+        $results = $response_body->results;
+
+        if(count($results) === 1) {
+            $poster = $results[0]->poster_path;
+            return 'http://image.tmdb.org/t/p/w342'.$poster;
+        } else {
+            $results = collect($results);
+            $results = $results->filter(function ($media, $index) use ($title) {
+                return MediaFilm::normalizeTitle($media->name) === MediaFilm::normalizeTitle($title);
+            });
+            $poster = $results[0]->poster_path;
+            return 'http://image.tmdb.org/t/p/w342'.$poster;
+        }
+
+    }
+
     private static function makeMedia($media, $apps, $genres = [])
     {
         $existing_media = MediaFilm::where("title", $media->title)->first();
@@ -100,7 +138,7 @@ class MediaFilm extends Model
                 "title" => $media->title,
                 "year" => $media->year,
                 "synopsis" => $media->synopsis,
-                "img_url" => $media->img_url,
+                "img_url" => MediaFilm::getImageUrl($media->title),
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
