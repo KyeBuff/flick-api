@@ -16,8 +16,7 @@ use App\Genre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-use GuzzleHttp;
-use Config;
+use App\Custom\MediaUtilities;
 
 class MediaFilm extends Model
 {
@@ -82,54 +81,6 @@ class MediaFilm extends Model
         $media->setApps($apps);
     }
 
-    private static function normalizeTitle($title)
-    {
-        //Remove symbols
-        $title = preg_replace("/[-!$%^&*@#()_+|~=`{}\[\]:\";'<>?,.\/]/", '', $title);
-
-        // Lowercase and remove whitespace
-        return strtolower(preg_replace('/\s+/', '', $title));
-    }
-
-    private static function getImageUrl($title) 
-    {
-
-        $api_key = Config::get('services.tmdb.api_key');
-        $api_url = Config::get('services.tmdb.endpoint');
-
-        $client = new GuzzleHttp\Client();
-
-        $res = $client->get($api_url.'movie?api_key='.$api_key.'&query='.$title, [
-            'headers' => [
-                'Accept' => 'application/json',
-            ]
-        ]);
-
-        $response_body = json_decode($res->getBody()->getContents());
-
-        $results = $response_body->results;
-
-        if(count($results) === 1) {
-            $poster = $results[0]->poster_path;
-            return 'http://image.tmdb.org/t/p/w342'.$poster;
-        } else {
-            $results = collect($results);
-            $results = $results->filter(function ($media, $index) use ($title) {
-                return MediaFilm::normalizeTitle($media->title) === MediaFilm::normalizeTitle($title);
-            });
-
-            if (count($results)) {
-                $poster = $results[0]->poster_path;
-            }
-
-            $poster = null;
-
-            $image_endpoint = Config::get('services.tmdb.image_endpoint');
-            return $poster ? $image_endpoint.$poster : null;
-        }
-
-    }
-
     private static function makeMedia($media, $apps, $genres = [])
     {
         $existing_media = MediaFilm::where("title", $media->title)->first();
@@ -151,7 +102,7 @@ class MediaFilm extends Model
                 "title" => $media->title,
                 "year" => $media->year,
                 "synopsis" => $media->synopsis,
-                "img_url" => MediaFilm::getImageUrl($media->title),
+                "img_url" => MediaUtilities::getImageUrl($media->title),
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
