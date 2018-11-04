@@ -16,6 +16,8 @@ use App\Genre;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+use App\Custom\MediaUtilities;
+
 class MediaSeries extends Model
 {
     protected $fillable = ["title", "year", "synopsis", "img_url"];
@@ -100,7 +102,7 @@ class MediaSeries extends Model
                 "title" => $media->title,
                 "year" => $media->year,
                 "synopsis" => $media->synopsis,
-                "img_url" => $media->img_url,
+                "img_url" => MediaUtilities::getImageUrl($media->title, 'tv'),
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
