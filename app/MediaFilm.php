@@ -96,7 +96,7 @@ class MediaFilm extends Model
 
         $api_key = Config::get('services.tmdb.api_key');
         $api_url = Config::get('services.tmdb.endpoint');
-        
+
         $client = new GuzzleHttp\Client();
 
         $res = $client->get($api_url.'movie?api_key='.$api_key.'&query='.$title, [
@@ -108,8 +108,6 @@ class MediaFilm extends Model
         $response_body = json_decode($res->getBody()->getContents());
 
         $results = $response_body->results;
-
-        dd($results);
 
         if(count($results) === 1) {
             $poster = $results[0]->poster_path;
@@ -125,7 +123,9 @@ class MediaFilm extends Model
             }
 
             $poster = null;
-            return 'http://image.tmdb.org/t/p/w342'.$poster;
+
+            $image_endpoint = Config::get('services.tmdb.image_endpoint');
+            return $poster ? $image_endpoint.$poster : null;
         }
 
     }

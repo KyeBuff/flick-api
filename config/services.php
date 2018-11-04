@@ -38,6 +38,7 @@ return [
     'tmdb' => [
         'api_key' => '7a910c69cc0be2f210022a399481d685',
         'endpoint' => 'https://api.themoviedb.org/3/search/',
+        'image_endpoint' => 'http://image.tmdb.org/t/p/w342',
     ],
 
 ];
