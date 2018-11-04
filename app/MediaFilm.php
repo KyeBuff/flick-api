@@ -25,12 +25,6 @@ class MediaFilm extends Model
         return $this->belongsToMany(Genre::class);
     }
 
-    private function mergeGenres($genres)
-    {
-        return $this->genres()->get()->merge($genres);
-    }
-
-
     private function setGenres(Collection $genres)
     {
         // update the pivot table with tag IDs
@@ -38,16 +32,29 @@ class MediaFilm extends Model
         return $this;
     }
 
+    private static function mergeGenres($genres, $existing_media)
+    {
+        $genre_titles = $genres->map(function ($genre) {
+            return $genre->title;
+        });
+
+        $existing_genre_titles = $existing_media->genres()->get()->map(function ($genre) {
+            return $genre->title;
+        });
+
+        return $existing_genre_titles->merge($genre_titles);
+
+    }
+
     private function apps()
     {
         return $this->belongsToMany(App::class);
     }
 
-    private function mergeApps($apps)
+    private static function mergeApps($apps, $existing_media)
     {
-        return $this->apps()->get()->merge($apps);
+        return App::parse([$apps])->merge($existing_media->apps()->get());
     }
-
 
     private function setApps(Collection $apps)
     {
@@ -78,18 +85,12 @@ class MediaFilm extends Model
 
         if ($existing_media) {
 
-            $genre_titles = $genres->map(function ($genre) {
-                return $genre->title;
-            });
+            $genres_merged = MediaFilm::mergeGenres($genres, $existing_media);
 
-            $existing_genre_titles = $existing_media->genres()->get()->map(function ($genre) {
-                return $genre->title;
-            });
-
-            $existing_genre_titles = $existing_genre_titles->merge($genre_titles);
-
-            $apps_merged = App::parse([$apps])->merge($existing_media->apps()->get());
+            // Recreates genres in the DB from a collection of titles
             $genres_merged = Genre::parse($existing_genre_titles);
+
+            $apps_merged = MediaFilm::mergeApps($apps, $existing_media);
 
             $existing_media->setGenresToMedia($existing_media, $genres_merged);
             $existing_media->setAppsToMedia($existing_media, $apps_merged);
