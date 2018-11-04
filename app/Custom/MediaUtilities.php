@@ -16,14 +16,14 @@ class MediaUtilities {
         return strtolower(preg_replace('/\s+/', '', $title));
 	}
 
-	private static function filterFilms($results, $title) 
+	private static function findFilm($results, $title) 
 	{
         return $results->filter(function ($media) use ($title) {
             return MediaUtilities::normalizeTitle($media->title) === MediaUtilities::normalizeTitle($title);
         });
 	}
 
-		private static function filterSeries($results, $title) 
+		private static function findSeries($results, $title) 
 	{
         return $results->filter(function ($media) use ($title) {
             return MediaUtilities::normalizeTitle($media->name) === MediaUtilities::normalizeTitle($title);
@@ -54,9 +54,9 @@ class MediaUtilities {
             $results = collect($results);
 
             if($type === 'movie') {
-	            $results = MediaUtilities::filterFilms($results, $title);
+	            $results = MediaUtilities::findFilm($results, $title);
             } else {
-	            $results = MediaUtilities::filterSeries($results, $title);
+	            $results = MediaUtilities::findSeries($results, $title);
             }
 
             $poster = null;
@@ -64,8 +64,6 @@ class MediaUtilities {
             if (count($results)) {
                 $poster = $results[0]->poster_path;
             }
-
-            dd($poster);
 
             $image_endpoint = Config::get('services.tmdb.image_endpoint');
             return $poster ? $image_endpoint.$poster : null;
