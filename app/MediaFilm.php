@@ -78,10 +78,20 @@ class MediaFilm extends Model
 
         if ($existing_media) {
 
-            $apps_merged = App::parse([$apps])->merge($existing_media->apps()->get());
-            // $genres_merged = Genre::parse([$genres])->merge($existing_media->genres()->get());
+            $genre_titles = $genres->map(function ($genre) {
+                return $genre->title;
+            });
 
-            // $existing_media->setGenresToMedia($existing_media, $genres_merged);
+            $existing_genre_titles = $existing_media->genres()->get()->map(function ($genre) {
+                return $genre->title;
+            });
+
+            $existing_genre_titles = $existing_genre_titles->merge($genre_titles);
+
+            $apps_merged = App::parse([$apps])->merge($existing_media->apps()->get());
+            $genres_merged = Genre::parse($existing_genre_titles);
+
+            $existing_media->setGenresToMedia($existing_media, $genres_merged);
             $existing_media->setAppsToMedia($existing_media, $apps_merged);
 
         } else {

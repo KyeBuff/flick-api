@@ -25,7 +25,7 @@ class Genre extends Model
 	    return $exists ? $exists : Genre::create(["title" => $string]);
 	}
 
-	public static function parse(array $genres)
+	public static function parse($genres)
 	{
 	    return collect($genres)->map(function ($genre) {
 	        return static::makeGenre($genre);
