@@ -34,11 +34,6 @@ class Users extends Controller
 
         */
 
-        $data = $request->only(["username", "synopsis", "isFilm", "img_url"]);
-
-        $media = Media::create($data);
-
-        return response($media, 201);
     }
 
     /**
