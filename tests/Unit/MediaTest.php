@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class NetflixTest extends TestCase
+class MediaTest extends TestCase
 {
     /**
      * Test new user sign up
@@ -26,7 +26,7 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPost()
+    public function testMediaFilmPost()
     {
     	$response = $this->json('POST', 'api/netflix/films', $this->title);
 
@@ -44,11 +44,11 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostNoTitle()
+    public function testMediaFilmPostNoTitle()
     {
         $title = $this->title;
         unset($title['title']);
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/amazon/films', $title);
 
         $response
             ->assertStatus(422);
@@ -59,11 +59,11 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostEmptyTitle()
+    public function testMediaFilmPostEmptyTitle()
     {
         $title = $this->title;
         $title['title'] = '';
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/bbc/films', $title);
 
         $response
             ->assertStatus(422);
@@ -74,12 +74,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostNoSynopsis()
+    public function testMediaFilmPostNoSynopsis()
     {
         $title = $this->title;
         unset($title['synopsis']);
 
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/c-four/films', $title);
 
         $response
             ->assertStatus(201)
@@ -95,11 +95,11 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostEmptySynopsis()
+    public function testMediaFilmPostEmptySynopsis()
     {
         $title = $this->title;
         $title['synopsis'] = '';
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/google/films', $title);
 
         $response
             ->assertStatus(201)
@@ -115,12 +115,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostNoImage()
+    public function testMediaFilmPostNoImage()
     {
         $title = $this->title;
         unset($title['img_url']);
 
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/itunes/films', $title);
 
         $response
             ->assertStatus(201)
@@ -135,12 +135,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostEmptyImage()
+    public function testMediaFilmPostEmptyImage()
     {
         $title = $this->title;
         $title['img_url'] = '';
 
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/itv/films', $title);
 
         $response
             ->assertStatus(201)
@@ -156,12 +156,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixFilmPostNoGenres()
+    public function testMediaFilmPostNoGenres()
     {
         $title = $this->title;
         unset($title['genres']);
 
-        $response = $this->json('POST', 'api/netflix/films', $title);
+        $response = $this->json('POST', 'api/rakuten/films', $title);
 
         $response
             ->assertStatus(201)
@@ -176,9 +176,9 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPost()
+    public function testMediaSeriesPost()
     {
-        $response = $this->json('POST', 'api/netflix/films', $this->title);
+        $response = $this->json('POST', 'api/google/series', $this->title);
 
         $response
             ->assertStatus(201)
@@ -194,7 +194,7 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostNoTitle()
+    public function testMediaSeriesPostNoTitle()
     {
         $title = $this->title;
         unset($title['title']);
@@ -209,11 +209,11 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostEmptyTitle()
+    public function testMediaSeriesPostEmptyTitle()
     {
         $title = $this->title;
         $title['title'] = '';
-        $response = $this->json('POST', 'api/netflix/series', $title);
+        $response = $this->json('POST', 'api/itv/series', $title);
 
         $response
             ->assertStatus(422);
@@ -224,12 +224,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostNoSynopsis()
+    public function testMediaSeriesPostNoSynopsis()
     {
         $title = $this->title;
         unset($title['synopsis']);
 
-        $response = $this->json('POST', 'api/netflix/series', $title);
+        $response = $this->json('POST', 'api/itunes/series', $title);
 
         $response
             ->assertStatus(201)
@@ -245,11 +245,11 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostEmptySynopsis()
+    public function testMediaSeriesPostEmptySynopsis()
     {
         $title = $this->title;
         $title['synopsis'] = '';
-        $response = $this->json('POST', 'api/netflix/series', $title);
+        $response = $this->json('POST', 'api/rakuten/series', $title);
 
         $response
             ->assertStatus(201)
@@ -265,7 +265,7 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostNoImage()
+    public function testMediaSeriesPostNoImage()
     {
         $title = $this->title;
         unset($title['img_url']);
@@ -285,12 +285,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostEmptyImage()
+    public function testMediaSeriesPostEmptyImage()
     {
         $title = $this->title;
         $title['img_url'] = '';
 
-        $response = $this->json('POST', 'api/netflix/series', $title);
+        $response = $this->json('POST', 'api/bbc/series', $title);
 
         $response
             ->assertStatus(201)
@@ -306,12 +306,12 @@ class NetflixTest extends TestCase
      *
      * @return void
      */
-    public function testNetflixSeriesPostNoGenres()
+    public function testMediaSeriesPostNoGenres()
     {
         $title = $this->title;
         unset($title['genres']);
 
-        $response = $this->json('POST', 'api/netflix/series', $title);
+        $response = $this->json('POST', 'api/amazon/series', $title);
 
         $response
             ->assertStatus(201)
