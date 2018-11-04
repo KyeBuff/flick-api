@@ -25,6 +25,7 @@ class MediaRequest extends FormRequest
     {
         return [
            "title" => ["required", "string", "max:100"],
+           "year" => ["integer"],
            "synopsis" => ["string", "max:1000000", "nullable"],
            "img_url" => ["url", "nullable"],
            "genres" => ["array", "nullable"],
