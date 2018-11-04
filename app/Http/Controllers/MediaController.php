@@ -117,7 +117,7 @@ class MediaController extends Controller
     //  */
     // public function store(MediaRequest $request)
     // {
-    //     $data = $request->only(["title", "synopsis", "isFilm", "img_url", "genres", "apps"]);
+    //     $data = $request->only(["title", "synopsis", "isFilm", "genres", "apps"]);
         
     //     $genres = Genre::parse($request->get("genres"));
     //     $apps = App::parse($request->get("apps"));
@@ -138,7 +138,7 @@ class MediaController extends Controller
 
     public function storeNetflixFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -153,7 +153,7 @@ class MediaController extends Controller
 
     public function storeNetflixSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -168,7 +168,7 @@ class MediaController extends Controller
 
     public function storeAmazonFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -183,7 +183,7 @@ class MediaController extends Controller
 
     public function storeAmazonSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -198,7 +198,7 @@ class MediaController extends Controller
 
     public function storeBBCFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -213,7 +213,7 @@ class MediaController extends Controller
 
     public function storeBBCSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -228,7 +228,7 @@ class MediaController extends Controller
 
     public function storeITVFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -243,7 +243,7 @@ class MediaController extends Controller
 
     public function storeITVSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -258,7 +258,7 @@ class MediaController extends Controller
 
     public function storeCFourFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -273,7 +273,7 @@ class MediaController extends Controller
 
     public function storeCFourSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -288,7 +288,7 @@ class MediaController extends Controller
 
     public function storeiTunesFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -303,7 +303,7 @@ class MediaController extends Controller
 
     public function storeiTunesSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -318,7 +318,7 @@ class MediaController extends Controller
 
     public function storeGoogleFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -333,7 +333,7 @@ class MediaController extends Controller
 
     public function storeGoogleSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -348,7 +348,7 @@ class MediaController extends Controller
 
     public function storeRakutenFilm(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
@@ -363,7 +363,7 @@ class MediaController extends Controller
 
     public function storeRakutenSeries(MediaRequest $request)
     {
-        $data = $request->only(["title", "year", "synopsis", "img_url", "genres"]);
+        $data = $request->only(["title", "year", "synopsis", "genres"]);
         
         $genres = $request->get("genres");
 
