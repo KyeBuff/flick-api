@@ -30,6 +30,7 @@ class AuthController extends Controller
     {
         User::createUser([
             'name' => $request->name,
+            'role' => 'flick-user',
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);

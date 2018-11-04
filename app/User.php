@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'role', 'password',
     ];
 
     /**
@@ -29,6 +29,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isScraper()
+    {
+        return $this['role'] == 'scraper';
+    }    
+
+    public function isUser()
+    {
+        return $this['role'] == 'flick-user';
+    }    
 
     public static function createUser($data) 
     {
