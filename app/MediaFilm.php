@@ -102,7 +102,7 @@ class MediaFilm extends Model
                 "title" => $media->title,
                 "year" => $media->year,
                 "synopsis" => $media->synopsis,
-                "img_url" => MediaUtilities::getImageUrl($media->title),
+                "img_url" => MediaUtilities::getImageUrl($media->title, 'movie'),
             ]);
 
             $new_media->setGenresToMedia($new_media, $genres);
